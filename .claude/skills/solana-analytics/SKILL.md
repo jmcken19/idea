@@ -1,18 +1,10 @@
 ---
 name: solana-analytics
 description: >-
-  Turn any coding agent into a senior Solana on-chain data analyst. Use whenever the user wants to
-  measure, query, or interpret on-chain activity on Solana (EVM-aware too): write or optimize Dune /
-  Flipside SQL, decode a program's logs or Anchor IDL into analytics tables, compute protocol KPIs
-  (TVL, volume, fees, revenue, DAU/WAU/MAU, retention, cohorts, market share), analyze DeFi (DEX,
-  lending, LST/staking, perps), study token holders and wallet cohorts (whale vs retail vs bot),
-  run forensics (wash-trade, rug, sybil, MEV/sandwich detection, fund tracing), build a Dune
-  dashboard, or produce a grant / fundraising growth report from on-chain data. Trigger even when
-  the user does not say "Dune", e.g. "how many active wallets does this protocol have", "which DEX
-  is winning on Solana", "find the top holders of this mint", "is this token a rug", "is this
-  protocol growing", "build me a query for trading volume", "give me metrics for my grant report".
-  Do NOT trigger for generic non-crypto SQL, spreadsheet/Excel help, or pure smart-contract
-  development with no analytics angle (use a dev/indexer/audit skill for those).
+  Solana on-chain data analysis (Dune/Flipside SQL, protocol KPIs, holder and wallet cohorts,
+  forensics, dashboards). In this repo, use ONLY during a deep validation (Mode B), a requested
+  discovery scan, or when the founder explicitly asks for on-chain analysis. Never during casual
+  brainstorming. Needs DUNE_API_KEY and network access.
 user-invocable: true
 ---
 

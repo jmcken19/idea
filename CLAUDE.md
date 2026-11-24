@@ -21,15 +21,16 @@ When the founder brings an idea, observation, question or "what if":
 Ask whether existing pieces can be combined in an unexpected way to make something useful. Novelty is not value, and demand must never be invented. But creativity isn't limited to what competitors already do.
 
 Rules for Mode A:
-- **Cheap by default:** no subagents, no formal records, no scorecards. Use 0–3 quick web searches, and only when a fact would change the discussion. Check `python3 tools/ir.py searched <terms>` and `research/` first; existing findings are free.
+- **Main session only, zero automatic research.** No subagents, records or scorecards. No web searches or API calls by default. Use external research only when one fact would materially change the discussion (at most 1–3 searches, saying why), or when the founder asks. Before any search, `python3 tools/ir.py searched <terms>` reuses existing findings for free.
+- **Concise by default:** short bullets covering only the steps that add something. Go deep only when asked.
 - **Competitors are context, not a verdict.** If something similar exists, say so and show it, then explore whether the opportunity lies in a different audience, model, channel or experience. Don't invent differentiation either: say plainly when an angle looks covered.
 - Save nothing unless the founder asks ("save this" → `python3 tools/ir.py note <slug> "<idea>"` → `ideas/<slug>.md`).
 
 ### Mode B: Deep validation (only when asked)
 Triggered by an explicit request: "validate this", "deep dive", "research this properly", `/validate`. Procedure: `system/validation-framework.md`. Rigorous research into existing products, competitors, GitHub, token launches, demand, customer behaviour, revenue models, feasibility, differentiation, distribution and risks. It ends with a clear outcome: deserves further consideration, needs more research, or should be abandoned. Specialist agents only where they add value (`system/agent-architecture.md`).
 
-### Opportunity discovery (on request)
-"What opportunities exist in X?", `/discover <area>`: scan emerging infrastructure, new launch mechanisms, underserved users, changing protocol economics, recurring pain, new tool combinations and poor UX. Write to `discovery/`. **A gap is not demand:** always separate "nobody has built this" from evidence that people want it.
+### Opportunity discovery (only on explicit request)
+Triggered by `/discover <area>` or an explicit "run a discovery scan". A casual "what opportunities exist in X?" is brainstorming (Mode A): answer it from reasoning and existing research, then offer a scan. The scan itself: scan emerging infrastructure, new launch mechanisms, underserved users, changing protocol economics, recurring pain, new tool combinations and poor UX. Write to `discovery/`. **A gap is not demand:** always separate "nobody has built this" from evidence that people want it.
 
 ## The Salary lesson (always on, never re-investigated)
 Salary (`lessons/salary/`) was built before checking that its core already existed: Pump.fun and Bags fee sharing had been misfiled as "infrastructure". Rules that carry over (`system/lessons-learned.md`):
@@ -44,7 +45,11 @@ Smart contracts, websites, landing pages, logos, mockups, tokenomics designs, MV
 Never invent competitors, numbers, users or partnerships. Separate facts, estimates, hypotheses and unknowns. In Mode B, tag material claims V / C / S / M / E / H / U with sources (`system/research-standards.md`); snippets and marketing never settle a material claim. Social engagement is not demand. A missing product is not proof of demand.
 
 ## Usage
-The founder has limited usage. Use the cheapest workflow that answers the question. Don't repeat completed work, don't launch agents to look thorough, and stop when the question is answered. Budgets: `system/usage-budget.md`.
+The founder has limited usage. Use the cheapest workflow that answers the question. Don't repeat completed work, don't launch agents to look thorough, and stop when the question is answered. Never launch more than one agent to explore an idea. Agents are for Mode B and explicit scans only.
+- **Load progressively.** In Mode A, read nothing beyond this file unless the conversation needs it. In Mode B, read only the `system/` doc and template for the current stage. Read `research/` files only when `searched` or `research/INDEX.md` points to them.
+- **Don't re-read unchanged files** within a session. Use what's already in context.
+- **Reuse cached data.** `ir.py fetch` serves cached results for 7 days and prints 3,000 characters by default (the full body stays in `research/.cache/`, so grep it instead of re-fetching).
+- Budgets: `system/usage-budget.md`.
 
 ## Where things live
 `ideas/` brainstorm notes · `discovery/` opportunity scans · `validations/` deep validations · `research/` shared market intelligence, competitor database, trends, infrastructure, token economics, search log · `lessons/` failed ideas and the Salary postmortem · `system/` standards and frameworks · `tools/ir.py` research CLI.

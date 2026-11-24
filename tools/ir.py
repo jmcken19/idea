@@ -6,7 +6,7 @@ Subcommands
   new <slug> "<idea in the submitter's words>"   start a deep validation record validations/<slug>/ (Mode B)
   searched <terms...>                            check the search log and the research index before searching
   log <tool> "<query>" <idea|-> "<result>"       record a search you ran (WebSearch, web-fetch, manual)
-  fetch <source> <arg> [--max-age DAYS]          cached GET against a free data API (logged automatically)
+  fetch <source> <arg> [--max-age DAYS] [--chars N]  cached GET (logged); prints 3,000 chars by default
   score <slug>                                   compute the score and verdict ceiling from scorecard.md
   lint [slug]                                    check that an idea record follows the framework
   npm-grep <pkg>[@version] <regex>               download an npm package (cached) and grep its files: primary-source SDK evidence
@@ -104,8 +104,9 @@ def cmd_searched(args):
         for line in open(path, encoding="utf-8"):
             low = line.lower()
             if all(t in low for t in terms):
-                print(f"{os.path.relpath(path, ROOT)}: {line.rstrip()}")
                 hits += 1
+                if hits <= 25:
+                    print(f"{os.path.relpath(path, ROOT)}: {line.rstrip()[:240]}")
     for dirpath, _, files in os.walk(os.path.join(ROOT, "research")):
         if ".cache" in dirpath:
             continue
@@ -114,8 +115,11 @@ def cmd_searched(args):
                 p = os.path.join(dirpath, fn)
                 text = open(p, encoding="utf-8").read().lower()
                 if all(t in text for t in terms):
-                    print(f"mentioned in: {os.path.relpath(p, ROOT)}")
                     hits += 1
+                    if hits <= 25:
+                        print(f"mentioned in: {os.path.relpath(p, ROOT)}")
+    if hits > 25:
+        print(f"-- output capped at 25 lines; add terms to narrow")
     print(f"-- {hits} prior hit(s). Reuse them if they are within their freshness window (system/usage-budget.md).")
 
 
@@ -128,6 +132,11 @@ def cmd_log(args):
 
 def cmd_fetch(args):
     max_age = 7.0
+    limit = 3000  # printed characters; the full body is always in the cache file
+    if "--chars" in args:
+        i = args.index("--chars")
+        limit = int(args[i + 1])
+        del args[i:i + 2]
     if "--max-age" in args:
         i = args.index("--max-age")
         max_age = float(args[i + 1])
@@ -144,7 +153,8 @@ def cmd_fetch(args):
         age = (dt.datetime.now(dt.timezone.utc).replace(tzinfo=None) - dt.datetime.fromisoformat(meta["fetched_at"])).total_seconds() / 86400
         if age <= max_age:
             print(f"# cache hit ({age:.1f} days old) {url}", file=sys.stderr)
-            print(json.dumps(meta["body"], indent=1)[:20000] if not isinstance(meta["body"], str) else meta["body"][:20000])
+            print((json.dumps(meta["body"], indent=1) if not isinstance(meta["body"], str) else meta["body"])[:limit])
+            print(f"# printed {limit} chars; full body in {os.path.relpath(path, ROOT)} (use --chars N or grep it)", file=sys.stderr)
             return
     headers = {"User-Agent": "idea-research-cli/1.0", "Accept": "application/json"}
     if src.startswith("github") and os.environ.get("GITHUB_TOKEN"):
@@ -168,7 +178,8 @@ def cmd_fetch(args):
     json.dump({"url": url, "fetched_at": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(), "body": body}, open(path, "w", encoding="utf-8"))
     append_log(f"fetch:{src}", raw, "-", f"cached {os.path.relpath(path, ROOT)}")
     print(f"# fetched {url} -> {os.path.relpath(path, ROOT)}", file=sys.stderr)
-    print(json.dumps(body, indent=1)[:20000] if not isinstance(body, str) else body[:20000])
+    print((json.dumps(body, indent=1) if not isinstance(body, str) else body)[:limit])
+    print(f"# printed {limit} chars; full body in {os.path.relpath(path, ROOT)} (use --chars N or grep it)", file=sys.stderr)
 
 
 def cmd_npm_grep(args):
@@ -254,7 +265,7 @@ def cmd_rpc(args):
         die(f"RPC unreachable: {e}")
     json.dump({"url": url, "fetched_at": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(), "body": json.loads(body)}, open(path, "w"))
     append_log("rpc", f"{args[0]} {args[1] if len(args) > 1 else ''}", "-", f"cached {os.path.relpath(path, ROOT)}")
-    print(body[:20000])
+    print(body[:3000])
 
 
 # (source, argument, validator) – the validator must confirm real content, not just a 200

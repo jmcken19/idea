@@ -4,8 +4,8 @@ Spend scales with how serious the question is. The founder's usage is limited.
 
 | Mode | Default spend |
 |---|---|
-| **Mode A: brainstorm** | Inline only, no subagents, 0–3 standard WebSearch, reuse `research/` first, no files unless asked |
-| **Discovery scan** | Up to 10 WebSearch + cheap primary checks; one market-researcher agent only if the founder asks for a broad scan |
+| **Mode A: brainstorm** | Main session only, no subagents; **0 searches and 0 API calls by default** (1–3 only when a fact materially changes the discussion, or on request); no files unless asked |
+| **Discovery scan** (explicit request only) | Up to 10 WebSearch + cheap primary checks; one market-researcher agent only if the founder asks for a broad scan |
 | **Mode B: deep validation** | The stage budgets below; specialist agents only where they add value; at most 2 at once |
 | **Historical records (`lessons/`)** | Zero. Never re-researched unless the founder asks |
 

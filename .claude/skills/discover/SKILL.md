@@ -1,6 +1,6 @@
 ---
 name: discover
-description: Opportunity discovery scan on request. Look for opportunities the founder hasn't named in an area (e.g. Solana token launches, creator economics, new infrastructure), separating "unbuilt" from "wanted". Use when the founder asks what opportunities exist somewhere.
+description: Opportunity discovery scan. ONLY when the founder explicitly asks for a scan (/discover <area> or "run a discovery scan"). Searches an area for opportunities the founder hasn't named, separating "unbuilt" from "wanted". A casual "what opportunities exist?" question is brainstorming, not a scan.
 ---
 Budget: up to 10 standard WebSearch, plus cheap primary checks (`ir.py npm-grep`, `fetch github-repos`). One `market-researcher` agent only if the founder asks for a broad scan. Reuse `research/` first (`python3 tools/ir.py searched <terms>`).
 

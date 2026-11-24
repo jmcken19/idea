@@ -2,10 +2,10 @@
 name: brainstorm
 description: Mode A, the default. Explore an idea, observation or "what if" with the founder. Understand it, widen it (audiences, business models, distribution, infrastructure combinations), name adjacent opportunities, challenge assumptions, and list unknowns. Cheap. Use whenever the founder brings an idea without asking for validation.
 ---
-Run inline. No subagents, no records, no scores.
+Run inline in the main session. No subagents, records, scores, web searches or API calls by default. Answer concisely, as short bullets, and skip any step that adds nothing.
 
 1. **Understand.** Restate the idea in one line. If it's ambiguous, ask one question.
-2. **Check what we already know (free):** `python3 tools/ir.py searched <terms>`, `research/INDEX.md`, `lessons/README.md`.
+2. **Reuse what we know, only if relevant:** if the idea touches a researched topic, run `python3 tools/ir.py searched <terms>` (one cheap local command). Open a `research/` file only if it points to one. Don't read files by default.
 3. **Explore the concept, not just the proposal.** What job does it do, and for whom? What other audiences, business models (who pays, for what), distribution channels, infrastructure combinations or user experiences could serve that job?
 4. **Cross-industry and unexpected combinations:**
    - *Outside → in:* a proven business model from another industry (payments, insurance, franchising, marketplaces, subscriptions, cooperatives, ticketing…) that could be adapted.
@@ -18,5 +18,5 @@ Run inline. No subagents, no records, no scores.
 8. **Honest take:** is it interesting, and why or why not?
 9. **Unknowns:** what we don't know, and the 1–3 cheapest checks that would matter most.
 
-Searches: 0–3 standard WebSearch, only when one fact would change the discussion. Log them (`python3 tools/ir.py log WebSearch "<q>" - "<result>"`).
+External research: none by default. Only when one fact would materially change the discussion (at most 1–3 standard WebSearch, saying why), or when the founder asks. Log any search (`python3 tools/ir.py log WebSearch "<q>" - "<result>"`).
 Close by offering: save as a note (`python3 tools/ir.py note …`), keep exploring, or run a deep validation (`/validate`).
