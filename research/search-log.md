@@ -145,3 +145,6 @@ Append-only. One line per search or fetch. Check with `python3 tools/ir.py searc
 | 2026-11-24 | fetch:dexscreener-search | accelerand | - | cached research/.cache/dexscreener-search-aff61b2faedaa52e29d8.json |
 | 2026-11-24 | fetch:dexscreener-search | accelerando%20ai | - | cached research/.cache/dexscreener-search-26e9fd7500c6c9be1803.json |
 | 2026-11-24 | fetch:dexscreener-search | accel | - | cached research/.cache/dexscreener-search-98c9a7b634e828668f69.json |
+| 2026-11-24 | fetch:dexscreener-token | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/dexscreener-token-5d39c73bf93f2c0f3ff5.json |
+| 2026-11-24 | fetch:rugcheck | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/rugcheck-60d26104b92662c304e1.json |
+| 2026-11-24 | fetch:geckoterminal-pools | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/geckoterminal-pools-8621041faf25fd07897d.json |

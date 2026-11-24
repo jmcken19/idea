@@ -62,3 +62,12 @@ Founder flagged that my token and market sourcing was off and that Accelerando i
 - **Frontier:** "AI Frontier" on Solana (`58QyXQ1UDgHh64EiTsCeevVM9cLPqBDNf3qZE6EdfUhZ`, pairs created 2026-10-19 onward, market cap roughly $175K on the SOL pair, 24-hour volume about $2K on the SOL pair at the time of the check). Also copies of "AI Frontier" on Robinhood chain and Arc, and unrelated "We Must Pace the Frontier" and "The Frontier" tokens. The earlier "AI Frontier, $40K, 15 holders" snippet was a different address (`BEJv7...`) and should be disregarded.
 - **Observed pairing mechanic (the most useful finding):** other tokens are trading **quoted in FRONTIER** (`BUBBLE/FRONTIER`, `BUTTHOLE/FRONTIER`, `Frongus/FRONTIER`), and Singularity and AI Frontier also show pairs quoted in other small tokens (CSR, CAJUNR, ILR). So a "canonical AI meme pairing coin" plausibly means a token that other launches use as their quote asset. This is consistent with the repo's earlier note that Pump.fun shipped custom pairs. Unverified: how these pairs were created, and whether volume is real.
 - **Not shown to exist by this check:** a site that lists AI-meme pairs. Not searched yet.
+
+## Accelerando CA check (2026-11-24)
+
+CA from founder: `HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump` (Solana).
+- **DexScreener** `/tokens/<CA>`: `pairs: null` (not listed or not indexed). Cause unconfirmed; the pool is dormant, which may be why.
+- **GeckoTerminal** finds it: pool "Accelerando / SOL" on **PumpSwap** (`E3ryCiBNosokYEg84pCHx6j5bfZ8tJbkqQzJxrV7ZxZe`), created 2026-01-30, FDV and market cap about $6.8K, liquidity about $9K, **zero transactions and zero volume in the last 24h** (so effectively dormant). One pool only.
+- **RugCheck** summary: one risk flag, "Creator history of rugged tokens" (danger, normalised score 53). That is an automated heuristic on the creator wallet, not proof about this token. LP locked 0%.
+- Why my name searches missed it: DexScreener has no entry for it at all, so "accelerando" returned nothing there.
+- Unknown: holder count and concentration, creator wallet and its history, who is behind it, what the coin's story is, whether it is the founder's own token or one they want to build around.
