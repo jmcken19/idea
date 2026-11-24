@@ -38,6 +38,9 @@ Salary (`lessons/salary/`) was built before checking that its core already exist
 - Every platform or protocol an idea depends on is also a potential competitor.
 - Salary is history. Do not reopen, re-validate or research it unless the founder explicitly asks.
 
+## Names may be memecoins (always on)
+The founder often names things that are memecoins. Treat any named thing as a possible token, check it by contract address or name through DexScreener, then GeckoTerminal, Jupiter, CoinGecko and RugCheck (don't stop at the first empty result), and never use generic web search for token facts. Procedure: `system/token-lookup.md`.
+
 ## Never produce
 Smart contracts, websites, landing pages, logos, mockups, tokenomics designs, MVPs, prototypes or marketing. These belong in a separate repository, after the founder explicitly decides to build.
 
