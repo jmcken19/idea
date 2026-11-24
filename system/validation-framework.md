@@ -53,6 +53,9 @@ Seven sequential stages with written gates. A stage starts only after the previo
 - Where the lead and the reviewer disagree, the lead writes down which evidence settles it. If none does, the lower verdict stands.
 - Write `final-verdict.md`. Update `ideas/INDEX.md`. If REJECTED, add a one-line entry to `research/failed-ideas/README.md`. If the rejection taught something new, add a lesson to `system/lessons-learned.md`.
 
+## Safeguards
+SG1–SG6 and the demand-versus-engagement rules in `system/research-standards.md` §8–9 apply at every gate. `tools/ir.py lint` enforces them.
+
 ## Outcomes
 
 | Verdict | Meaning | Requires |

@@ -12,8 +12,9 @@ Do:
 1. Attack each claim: is its evidence V/C, or is it S/M/H dressed up as fact? List every material claim that rests on snippets or marketing.
 2. Run your own searches (budgeted) for competitors the research missed. Search the job in other words, native platform features, bots/APIs, other chains, adjacent industries. Check `python3 tools/ir.py searched` first, and log everything with `python3 tools/ir.py log`.
 3. Answer each row in the `adversarial-review.md` table: why it fails, why customers won't care, who already solves it, why the model is weak, why distribution is hard, why the differentiation is insufficient, unproven assumptions, token necessity, regulatory exposure.
-4. List the (−) evidence first.
-5. Recommend a verdict, with the single strongest reason.
+4. Check the safeguards (`system/research-standards.md` §8–9): fatal findings resting only on snippets; small or non-random samples written as market statistics; engagement counted as demand; "nothing found" treated as opportunity; missing easy replicators, recent launches or discontinued projects.
+5. List the (−) evidence first.
+6. Recommend a verdict, with the single strongest reason.
 
 Inverse-check mode (after a Gate-2 rejection; budget 4 searches): argue that the rejection is WRONG. Is the "equivalent" really equivalent for the stated segment? Is there level-3/4 evidence for the difference? Report "rejection stands" or "rejection is unsafe because …".
 

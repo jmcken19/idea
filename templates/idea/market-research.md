@@ -9,6 +9,13 @@ Behaviour beats talk. Score each level separately; they are not interchangeable.
 | 3. People using existing solutions | | | |
 | 4. People paying for existing solutions | | | |
 
+## Demand evidence
+
+Kinds and level caps: `system/research-standards.md` §9. Engagement can never count above level 1.
+
+| Evidence | Kind | Level | Direction | Tag + source |
+|---|---|---|---|---|
+
 ## Questions
 
 | Question | Answer | Tag + source |

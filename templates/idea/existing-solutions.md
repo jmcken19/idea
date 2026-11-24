@@ -15,12 +15,20 @@ Question: **who already solves this, and why should this exist anyway?**
 | Bots, Telegram tools, APIs and "dev tools" sites | | | |
 | Other chains (EVM, Base, BNB) | | | |
 | Web2 or adjacent industries | | | |
-| Dead or abandoned attempts | | | |
+| Recent launches (last 90 days: GitHub created:>, npm, news) | | | |
+| Discontinued / abandoned projects (archived repos, Wayback, shutdown news) | | | |
 
 ## Equivalents found
 
 | Product | What it does that overlaps | Evidence tag + source | Overlap: full / partial / adjacent |
 |---|---|---|---|
+
+## Easy replicators
+
+Who could ship this quickly (SG3)? Evidence of capability is required.
+
+| Who | Why they could ship it fast | Evidence |
+|---|---|---|
 
 ## Gate 2 decision
 

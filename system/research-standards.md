@@ -63,3 +63,27 @@ Channels, by priority: native platform docs and changelogs → GitHub and npm �
 ## 7. Reuse before research
 
 Before any search, run `python3 tools/ir.py searched <terms>` and read `research/INDEX.md`. Reuse a finding if it is inside its freshness window. Otherwise update the existing file instead of creating a new one.
+
+## 8. Permanent safeguards (added 2026-11-24; enforced by `tools/ir.py lint`)
+
+| ID | Requirement | How it is enforced |
+|---|---|---|
+| SG1 | **Fatal competitor findings rest on direct evidence wherever it exists**: the product's own docs, SDK/source code, repo, or a chain read. Not a news snippet or a vendor roundup. If direct evidence is truly unavailable (e.g. host blocked), say why under `Direct evidence unavailable:` in `final-verdict.md`, and name it as an uncertainty | Lint: any fatal or gating scorecard row must cite a source typed `primary`, `onchain` or `repo` |
+| SG2 | **Small samples are never presented as representative market statistics.** Every sample statistic states `n=`, how the sample was drawn (random / convenience / hand-picked), and the population. Below about n=100, or for any non-random sample, write "illustrative, not representative" | Lint: lines quoting a sample/study statistic must contain `n=`; the adversarial reviewer checks the wording |
+| SG3 | **Competitor research includes easy replicators**: products, platforms or tools that could ship the proposed function quickly, with evidence of their capability (an existing adjacent feature, an SDK primitive, a history of copying) | Lint: `existing-solutions.md` needs a non-empty `## Easy replicators` table |
+| SG4 | **Recent launches (last 90 days) and discontinued projects are always investigated**, using GitHub `created:>` / `archived:true`, npm release history, the Wayback Machine and news | Lint: the coverage table must have `Recent launches` and `Discontinued` rows marked Yes or `Blocked: <reason>` |
+| SG5 | **A lack of evidence is never evidence of opportunity.** "Nothing found" counts only after full coverage. Incomplete or blocked channels cap originality (#1) and competition (#2) at 3 | Lint: #1 or #2 ≥ 4 is an error while any coverage channel is No / Partly / Blocked |
+| SG6 | **Every final verdict names its unresolved uncertainties**: what is still unknown, which evidence is weakest, and what could reverse the verdict | Lint: `final-verdict.md` needs a non-empty `## Unresolved uncertainties` section |
+
+## 9. Demand versus engagement
+
+Social engagement is not demand. In `market-research.md`, every demand signal goes in the `## Demand evidence` table with a **kind** from this fixed vocabulary. Each kind has a maximum demand level it can support (the lint rejects anything higher):
+
+| Max level | Kinds |
+|---|---|
+| 1: discussing | engagement, likes, followers, views, upvotes, comments, stars, forks, community-members, waitlist, survey-interest, kol-mention, token-price, token-volume, press-coverage, discussion, complaint |
+| 2: seeking | request, bounty-posted, rfp, search-for-tool, feature-request |
+| 3: using | downloads, onchain-usage, active-users, integration, workaround-built, native-feature-usage |
+| 4: paying | paid-product, revenue, fees-paid, price-paid, paid-preorder, contract |
+
+The verified-demand score (#3) can be 3 or more only if a (+) row at level 3–4 has V or C evidence. A token's price or trading volume is speculation about the token, not demand for the product. GitHub stars and downloads can be bot-inflated, so downloads count as level 3 only with a stated reason.

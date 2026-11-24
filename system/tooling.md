@@ -6,7 +6,7 @@ Audited 2026-11-24 in a Claude Code cloud session. Re-audit when the environment
 
 | Capability | Status | Notes |
 |---|---|---|
-| WebSearch (standard and extended) | **Works** | Server-side; returns results plus summaries. Results are `S`-grade evidence until a page is opened |
+| WebSearch (standard and extended) | **Works** (audit 2: still the only general web channel) | Server-side; returns results plus summaries. Results are `S`-grade evidence until a page is opened |
 | web-fetch (open a page) | **Blocked** for hosts outside the environment's allowed list (DNS failure). This is the main gap | Same network policy as the container |
 | GitHub search (`gh api -X GET search/...`, `ir.py fetch github-repos`) | **Works** | Repo/code search across GitHub. Reading a repo's README or files needs the repo attached (`add_repo`) |
 | npm registry (`ir.py fetch npm <pkg>`) | **Works** | SDK versions and publish dates; good primary evidence for when a protocol feature shipped |
@@ -60,3 +60,49 @@ Pricing as found on 2026-11-24 from the providers' docs via search (`S`/`C` grad
   { "permissions": { "allow": ["Bash(python3 tools/ir.py:*)", "Bash(gh api -X GET search/:*)", "WebSearch"] } }
   ```
 - `.gitignore`: excludes `research/.cache/`.
+
+## 5. Infrastructure audit 2 (2026-11-24, 19:41 UTC)
+
+**Network change status:** the hosts were **not** allowed at audit time. This session runs on the *Default* environment, whose allowlist was unchanged (4 unrelated hosts). Two attempts by Claude to make the change (create a dedicated environment; add the hosts to Default) were both **rejected by the environments service** without applying anything. This points to an account or organisation restriction on environment edits from a session. The founder needs to add the hosts in Settings (§3) or ask an admin.
+
+### Data sources, tested individually with content validation (`python3 tools/ir.py check-sources --pages`)
+
+Each source is called with a known query, and the response body is checked for the expected fields (e.g. DefiLlama `total24h`, DexScreener `pairs[]`, GitHub `total_count`), not just the HTTP status.
+
+| Source | Host | Result |
+|---|---|---|
+| GitHub search | api.github.com/search | **OK**, content validated |
+| GitHub raw files | raw.githubusercontent.com | **OK**, content validated (new channel: READMEs and source of any public repo) |
+| `git clone` of public repos | github.com | **OK** (Squads v4 cloned) |
+| npm registry + package tarballs | registry.npmjs.org | **OK**, content validated (new `npm-grep`: SDK source code as primary evidence) |
+| npm search | registry.npmjs.org | **OK** |
+| PyPI | pypi.org | **OK** |
+| Go module proxy | proxy.golang.org | OK (not wired; no use yet) |
+| GitHub repo API | api.github.com/repos/* | **Refused** for repos not attached to the session; use search + raw instead |
+| DefiLlama (fees, protocol) | api.llama.fi, coins.llama.fi | **Blocked** (proxy 403) |
+| CoinGecko | api.coingecko.com | **Blocked** |
+| DexScreener | api.dexscreener.com | **Blocked** |
+| GeckoTerminal | api.geckoterminal.com | **Blocked** |
+| Jupiter tokens | lite-api.jup.ag | **Blocked** |
+| RugCheck | api.rugcheck.xyz | **Blocked** |
+| Solana RPC (`ir.py rpc`) | api.mainnet-beta.solana.com | **Blocked** |
+| Reddit / HN / Wayback | www.reddit.com, hn.algolia.com, web.archive.org | **Blocked** |
+| crates.io, codeload.github.com, unpkg, jsDelivr | | Blocked/refused (not needed) |
+| WebSearch (tool) | server-side | **OK** (snippet grade) |
+| web-fetch (tool) | server-side, same policy | **Blocked** for every host not allowlisted |
+
+### Direct web pages (competitor sites and docs)
+
+All 12 tested pages are **blocked**: pump.fun/docs, docs.bags.fm, pumpdev.io, streamflow.finance, docs.squads.so, madeonsol.com, docs.mobula.io, gmgn.ai, clanker.gitbook.io, docs.dexscreener.com, theblock.co, cointelegraph.com. Primary evidence for those products currently comes only from their published SDK code (npm) or public GitHub repos.
+
+### Machinery verified by tests (`python3 -W ignore -m unittest discover -s tests`, 22 tests)
+
+| Function | Verified behaviour |
+|---|---|
+| API caching | A second identical fetch is a cache hit, is not logged again and costs nothing; `--max-age 0` forces a refetch |
+| Deduplication | `searched` finds prior queries in the log and indexes; it reports 0 hits for new terms |
+| Budgets | `spend <slug>` counts searches and fetches per idea from the log and flags overruns |
+| Citations | Lint fails a claim citing an S-ID that isn't in `sources.md`, and sources without a locator or access date |
+| Scoring gates | A high total can't hide an existing equivalent; a fatal flag wins; unsourced scores count as unverified |
+| Safeguards SG1–SG6 | Each has a failing and a passing fixture |
+| Demand vs engagement | Likes, waitlists, stars and token price capped at level 1; engagement-only evidence can't support a demand score of 3; snippet-grade "paying" evidence doesn't count; negative usage data doesn't count as support |

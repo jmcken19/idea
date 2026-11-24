@@ -8,6 +8,10 @@ Subcommands
   fetch <source> <arg> [--max-age DAYS]          cached GET against a free data API (logged automatically)
   score <slug>                                   compute the score and verdict ceiling from scorecard.md
   lint [slug]                                    check that an idea record follows the framework
+  npm-grep <pkg>[@version] <regex>               download an npm package (cached) and grep its files: primary-source SDK evidence
+  spend <slug>                                   research spend for an idea from the search log, against the budget
+  rpc <method> ['<json params>']                 Solana JSON-RPC call (SOLANA_RPC_URL or the public endpoint), cached
+  check-sources [--pages]                        call every data source with a known query and validate the response body
 
 Cached responses live in research/.cache/ (git-ignored). Every fetch and log
 entry is appended to research/search-log.md, so later sessions can see what
@@ -60,8 +64,12 @@ SOURCES = {
     "reddit": "https://www.reddit.com/search.json?q={q}&sort=relevance&limit=25",
     "hn": "https://hn.algolia.com/api/v1/search?query={q}",
     "wayback": "https://web.archive.org/cdx/search/cdx?url={q}&output=json&limit=5&fl=timestamp,original",
+    "github-raw": "https://raw.githubusercontent.com/{raw}",
+    "pypi": "https://pypi.org/pypi/{q}/json",
     "url": "{raw}",
 }
+# Note (2026-11-24): api.github.com/repos/* is refused for repos not attached to the session,
+# but search and raw.githubusercontent.com work. github-raw takes owner/repo/HEAD/path.
 
 
 def die(msg, code=1):
@@ -126,7 +134,7 @@ def cmd_fetch(args):
     os.makedirs(CACHE, exist_ok=True)
     if os.path.exists(path):
         meta = json.load(open(path, encoding="utf-8"))
-        age = (dt.datetime.utcnow() - dt.datetime.fromisoformat(meta["fetched_at"])).total_seconds() / 86400
+        age = (dt.datetime.now(dt.timezone.utc).replace(tzinfo=None) - dt.datetime.fromisoformat(meta["fetched_at"])).total_seconds() / 86400
         if age <= max_age:
             print(f"# cache hit ({age:.1f} days old) {url}", file=sys.stderr)
             print(json.dumps(meta["body"], indent=1)[:20000] if not isinstance(meta["body"], str) else meta["body"][:20000])
@@ -150,10 +158,162 @@ def cmd_fetch(args):
         body = json.loads(data)
     except json.JSONDecodeError:
         body = data
-    json.dump({"url": url, "fetched_at": dt.datetime.utcnow().isoformat(), "body": body}, open(path, "w", encoding="utf-8"))
+    json.dump({"url": url, "fetched_at": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(), "body": body}, open(path, "w", encoding="utf-8"))
     append_log(f"fetch:{src}", raw, "-", f"cached {os.path.relpath(path, ROOT)}")
     print(f"# fetched {url} -> {os.path.relpath(path, ROOT)}", file=sys.stderr)
     print(json.dumps(body, indent=1)[:20000] if not isinstance(body, str) else body[:20000])
+
+
+def cmd_npm_grep(args):
+    import io, tarfile
+    if len(args) < 2:
+        die("usage: npm-grep <pkg>[@version] <regex>")
+    spec, rx = args[0], re.compile(" ".join(args[1:]), re.I)
+    name, _, ver = spec[1:].partition("@") if spec.startswith("@") else spec.partition("@")
+    name = ("@" + name) if spec.startswith("@") else name
+    os.makedirs(CACHE, exist_ok=True)
+    meta_url = "https://registry.npmjs.org/" + urllib.parse.quote(name, safe="@")
+    meta = json.loads(urllib.request.urlopen(urllib.request.Request(meta_url, headers={"User-Agent": "idea-research-cli/1.0"}), timeout=30).read())
+    ver = ver or meta["dist-tags"]["latest"]
+    if ver not in meta["versions"]:
+        die(f"{name}@{ver} not found")
+    tar_url = meta["versions"][ver]["dist"]["tarball"]
+    path = os.path.join(CACHE, "npm-" + hashlib.sha256(tar_url.encode()).hexdigest()[:20] + ".tgz")
+    if not os.path.exists(path):
+        data = urllib.request.urlopen(urllib.request.Request(tar_url, headers={"User-Agent": "idea-research-cli/1.0"}), timeout=60).read()
+        open(path, "wb").write(data)
+        cached = "downloaded"
+    else:
+        cached = "cache hit"
+    published = meta.get("time", {}).get(ver, "?")[:10]
+    hits = 0
+    with tarfile.open(path) as t:
+        for m in t.getmembers():
+            if not m.isfile() or m.size > 5_000_000:
+                continue
+            text = t.extractfile(m).read().decode("utf-8", "replace")
+            for i, line in enumerate(text.splitlines(), 1):
+                if rx.search(line):
+                    hits += 1
+                    if hits <= 40:
+                        print(f"{m.name}:{i}: {line.strip()[:200]}")
+    print(f"-- {hits} match(es) in {name}@{ver} (published {published}, {cached})")
+    append_log("npm-grep", f"{name}@{ver} /{rx.pattern}/", "-", f"{hits} matches; published {published}")
+
+
+BUDGET = {"WebSearch": 50, "fetch": 60, "page": 30}
+
+
+def cmd_spend(args):
+    if len(args) != 1:
+        die("usage: spend <slug>")
+    counts = {}
+    if os.path.exists(SEARCH_LOG):
+        for line in open(SEARCH_LOG, encoding="utf-8"):
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            if len(cells) >= 5 and cells[3] == args[0]:
+                tool = cells[1]
+                kind = "WebSearch" if tool.startswith("WebSearch") else "page" if tool in ("web-fetch", "github-raw-read") else "fetch"
+                counts[kind] = counts.get(kind, 0) + 1
+    for k, cap in BUDGET.items():
+        n = counts.get(k, 0)
+        flag = "  OVER BUDGET" if n > cap else ""
+        print(f"{k:10s} {n:3d} / {cap} (full-pipeline cap){flag}")
+    print("Per-stage limits: system/usage-budget.md. Untagged fetches (idea '-') are not counted here.")
+
+
+def http_get(url, data=None, timeout=25):
+    headers = {"User-Agent": "idea-research-cli/1.0", "Accept": "application/json, text/plain, */*"}
+    if data is not None:
+        headers["Content-Type"] = "application/json"
+    req = urllib.request.Request(url, data=data, headers=headers)
+    with urllib.request.urlopen(req, timeout=timeout) as r:
+        return r.status, r.read().decode("utf-8", "replace")
+
+
+def cmd_rpc(args):
+    if not args:
+        die("usage: rpc <method> ['<json params>']")
+    url = os.environ.get("SOLANA_RPC_URL", "https://api.mainnet-beta.solana.com")
+    params = json.loads(args[1]) if len(args) > 1 else []
+    payload = json.dumps({"jsonrpc": "2.0", "id": 1, "method": args[0], "params": params}).encode()
+    key = hashlib.sha256(payload).hexdigest()[:20]
+    path = os.path.join(CACHE, f"rpc-{key}.json")
+    os.makedirs(CACHE, exist_ok=True)
+    try:
+        _, body = http_get(url, payload)
+    except (urllib.error.URLError, OSError) as e:
+        append_log("rpc", args[0], "-", f"FAILED: {e}")
+        die(f"RPC unreachable: {e}")
+    json.dump({"url": url, "fetched_at": dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(), "body": json.loads(body)}, open(path, "w"))
+    append_log("rpc", f"{args[0]} {args[1] if len(args) > 1 else ''}", "-", f"cached {os.path.relpath(path, ROOT)}")
+    print(body[:20000])
+
+
+# (source, argument, validator) – the validator must confirm real content, not just a 200
+CHECKS = [
+    ("defillama-fees", "pump.fun", lambda b: isinstance(b, dict) and "total24h" in b),
+    ("defillama-protocol", "pump.fun", lambda b: isinstance(b, dict) and b.get("name")),
+    ("coingecko-search", "solana", lambda b: isinstance(b, dict) and len(b.get("coins", [])) > 0),
+    ("dexscreener-search", "bonk", lambda b: isinstance(b, dict) and len(b.get("pairs") or []) > 0),
+    ("geckoterminal-pools", "bonk", lambda b: isinstance(b, dict) and len(b.get("data", [])) > 0),
+    ("jup-search", "SOL", lambda b: isinstance(b, list) and len(b) > 0),
+    ("rugcheck", "DezXAZ8z7PnrnRJjz3wXBoRgixCa6xjnB7YaB1pPB263", lambda b: isinstance(b, dict) and ("score" in b or "risks" in b)),
+    ("github-repos", "solana payroll", lambda b: isinstance(b, dict) and b.get("total_count", 0) > 0),
+    ("github-raw", "Squads-Protocol/v4/HEAD/README.md", lambda b: isinstance(b, str) and "Squads" in b),
+    ("npm", "@pump-fun/pump-sdk", lambda b: isinstance(b, dict) and "dist-tags" in b),
+    ("npm-search", "solana payroll", lambda b: isinstance(b, dict) and "objects" in b),
+    ("pypi", "solana", lambda b: isinstance(b, dict) and "info" in b),
+    ("reddit", "solana fee split", lambda b: isinstance(b, dict) and "data" in b),
+    ("hn", "solana", lambda b: isinstance(b, dict) and len(b.get("hits", [])) > 0),
+    ("wayback", "bags.fm", lambda b: isinstance(b, list) and len(b) > 1),
+]
+PAGES = [
+    "https://pump.fun/docs/fees", "https://docs.bags.fm/llms.txt", "https://pumpdev.io/claim-distribute",
+    "https://streamflow.finance/blog/web3-payroll", "https://docs.squads.so/main/development/reference/spending-limits",
+    "https://madeonsol.com/deployer-hunter", "https://docs.mobula.io/llms.txt", "https://gmgn.ai/",
+    "https://clanker.gitbook.io/clanker-documentation", "https://docs.dexscreener.com/api/reference",
+    "https://www.theblock.co/", "https://cointelegraph.com/",
+]
+
+
+def cmd_check_sources(args):
+    rows = []
+    for src, arg, ok in CHECKS:
+        raw = arg
+        url = SOURCES[src].format(q=urllib.parse.quote(raw, safe=":/"), raw=raw)
+        try:
+            status, text = http_get(url)
+            try:
+                body = json.loads(text)
+            except json.JSONDecodeError:
+                body = text
+            verdict = "OK (content validated)" if ok(body) else f"RESPONDED {status} but content check FAILED"
+        except urllib.error.HTTPError as e:
+            verdict = f"HTTP {e.code}"
+        except (urllib.error.URLError, OSError) as e:
+            verdict = "BLOCKED/UNREACHABLE: " + str(getattr(e, "reason", e))[:90]
+        rows.append((src, urllib.parse.urlparse(url).hostname, verdict))
+    try:
+        _, text = http_get("https://api.mainnet-beta.solana.com", json.dumps({"jsonrpc": "2.0", "id": 1, "method": "getSlot"}).encode())
+        rows.append(("rpc", "api.mainnet-beta.solana.com", "OK (content validated)" if '"result"' in text else "content check FAILED"))
+    except (urllib.error.URLError, OSError) as e:
+        rows.append(("rpc", "api.mainnet-beta.solana.com", "BLOCKED/UNREACHABLE: " + str(getattr(e, "reason", e))[:90]))
+    if "--pages" in args:
+        for u in PAGES:
+            try:
+                status, text = http_get(u)
+                rows.append(("page", u, f"OK {status}, {len(text)} chars" if len(text) > 500 else f"{status} but only {len(text)} chars"))
+            except urllib.error.HTTPError as e:
+                rows.append(("page", u, f"HTTP {e.code}"))
+            except (urllib.error.URLError, OSError) as e:
+                rows.append(("page", u, "BLOCKED/UNREACHABLE: " + str(getattr(e, "reason", e))[:90]))
+    print(f"Source check {dt.datetime.now(dt.timezone.utc).replace(tzinfo=None).isoformat(timespec='minutes')}Z\n")
+    print("| Source | Host / URL | Result |\n|---|---|---|")
+    for r in rows:
+        print(f"| {r[0]} | {r[1]} | {r[2]} |")
+    ok_n = sum(r[2].startswith("OK") for r in rows)
+    print(f"\n{ok_n}/{len(rows)} working.")
 
 
 def cmd_new(args):
@@ -253,6 +413,125 @@ def declared_verdict(slug):
     return next((x for x in VERDICTS if v.startswith(x)), v)
 
 
+
+# ---- Demand classification: engagement is never demand (system/research-standards.md §8) ----
+DEMAND_KINDS = {
+    # kind: highest demand level it can ever support
+    "engagement": 1, "likes": 1, "followers": 1, "views": 1, "upvotes": 1, "comments": 1, "stars": 1,
+    "forks": 1, "community-members": 1, "waitlist": 1, "survey-interest": 1, "kol-mention": 1,
+    "token-price": 1, "token-volume": 1, "press-coverage": 1, "discussion": 1, "complaint": 1,
+    "request": 2, "bounty-posted": 2, "rfp": 2, "search-for-tool": 2, "feature-request": 2,
+    "downloads": 3, "onchain-usage": 3, "active-users": 3, "integration": 3, "workaround-built": 3,
+    "native-feature-usage": 3,
+    "paid-product": 4, "revenue": 4, "fees-paid": 4, "price-paid": 4, "paid-preorder": 4, "contract": 4,
+}
+
+
+def demand_rows(d):
+    """Rows of the 'Demand evidence' table in market-research.md:
+    | Evidence | Kind | Level | Direction | Tag + source |"""
+    p = os.path.join(d, "market-research.md")
+    if not os.path.exists(p):
+        return None
+    text = open(p, encoding="utf-8").read()
+    if "## Demand evidence" not in text:
+        return None
+    sect = text.split("## Demand evidence", 1)[1].split("\n## ", 1)[0]
+    rows = []
+    for line in sect.splitlines():
+        cells = [c.strip() for c in line.strip().strip("|").split("|")]
+        if len(cells) >= 5 and cells[0] not in ("Evidence", "") and not set(cells[0]) <= set("-: "):
+            rows.append({"evidence": cells[0], "kind": cells[1].lower(), "level": cells[2], "dir": cells[3], "tag": cells[4]})
+    return rows
+
+
+def check_demand(d):
+    problems, rows = [], demand_rows(d)
+    if rows is None:
+        return problems, 0
+    best = 0
+    for r in rows:
+        if r["kind"] not in DEMAND_KINDS:
+            problems.append(f"demand row '{r['evidence'][:40]}': unknown kind '{r['kind']}' (see DEMAND_KINDS)")
+            continue
+        try:
+            lvl = int(r["level"])
+        except ValueError:
+            problems.append(f"demand row '{r['evidence'][:40]}': level must be 1-4")
+            continue
+        cap = DEMAND_KINDS[r["kind"]]
+        if lvl > cap:
+            problems.append(f"demand row '{r['evidence'][:40]}': kind '{r['kind']}' can support at most level {cap}, not {lvl} (engagement is not demand)")
+        strong = re.search(r"\[(V|C)\b", r["tag"])
+        if lvl >= 3 and strong and r["dir"].strip().startswith("+"):
+            best = max(best, min(lvl, cap))
+    return problems, best
+
+
+def safeguard_checks(d):
+    """Permanent safeguards added 2026-11-24 (system/research-standards.md §8)."""
+    problems = []
+    read = lambda fn: open(os.path.join(d, fn), encoding="utf-8").read() if os.path.exists(os.path.join(d, fn)) else ""
+    es, fv, src = read("existing-solutions.md"), read("final-verdict.md"), read("sources.md")
+    types = {}
+    for line in src.splitlines():
+        m = re.match(r"\|\s*(S\d+)\s*\|", line)
+        if m:
+            cells = [c.strip() for c in line.strip().strip("|").split("|")]
+            types[m.group(1)] = cells[3].lower() if len(cells) > 3 else ""
+    direct = lambda ids: [i for i in ids if types.get(i, "").startswith(("primary", "onchain", "repo"))]
+    # SG1: fatal competitor findings rest on direct evidence where available
+    rows = parse_scorecard(d) if os.path.exists(os.path.join(d, "scorecard.md")) else []
+    by = {r["n"]: r for r in rows}
+    gate = by.get(2, {}).get("score") is not None and by.get(1, {}).get("score") is not None and by[2]["score"] <= 1 and by[1]["score"] <= 1
+    for r in rows:
+        if (r["fatal"] or (gate and r["n"] in (1, 2))):
+            ids = re.findall(r"S\d+", r["evidence"])
+            if not direct(ids) and "Direct evidence unavailable:" not in fv:
+                problems.append(f"SG1: #{r['n']} is fatal/gating but cites no primary/onchain/repo source; add one or explain under 'Direct evidence unavailable:' in final-verdict.md")
+    # SG3/SG4: replicators, recent launches and discontinued projects are covered
+    if es and "## Easy replicators" not in es:
+        problems.append("SG3: existing-solutions.md lacks '## Easy replicators' (who could copy this quickly)")
+    elif es:
+        rep = es.split("## Easy replicators", 1)[1].split("\n## ", 1)[0]
+        if not re.search(r"^\|(?!\s*-)(?!\s*Product)(?!\s*Who).+\|", rep, re.M):
+            problems.append("SG3: '## Easy replicators' has no rows")
+    for label in ("Recent launches", "Discontinued"):
+        m = re.search(r"^\|\s*" + label + r"[^|]*\|\s*([^|]*)\|", es, re.M)
+        if not m:
+            problems.append(f"SG4: coverage table lacks a '{label} …' row")
+        elif not re.match(r"(yes|blocked)", m.group(1).strip(), re.I):
+            problems.append(f"SG4: '{label}' coverage is '{m.group(1).strip()}': must be Yes or 'Blocked: <reason>'")
+    # SG5: absence of evidence is never scored as opportunity
+    incomplete = re.findall(r"^\|[^|]+\|\s*(no|partly|blocked)[^|]*\|", es, re.M | re.I)
+    for n in (1, 2):
+        sc = by.get(n, {}).get("score")
+        if incomplete and sc is not None and sc >= 4:
+            problems.append(f"SG5: #{n} scored {sc} while {len(incomplete)} coverage channel(s) are incomplete: lack of evidence is not evidence of opportunity")
+    # SG2: sample statistics state n and representativeness
+    for fn in REQUIRED_FILES + ["postmortem.md"]:
+        for i, line in enumerate(read(fn).splitlines(), 1):
+            if re.search(r"\b(sample|sampled|study)\b", line, re.I) and re.search(r"\d+\s*(%|/\s*\d+|of\s+\d+)", line):
+                if not re.search(r"n\s*=\s*[\d,]+", line):
+                    problems.append(f"SG2: {fn}:{i} quotes a sample statistic without 'n=' and its representativeness")
+    # SG6: every final verdict names unresolved uncertainties
+    v = declared_verdict(d)
+    if v in VERDICTS:
+        if "## Unresolved uncertainties" not in fv:
+            problems.append("SG6: final-verdict.md lacks '## Unresolved uncertainties'")
+        else:
+            body = fv.split("## Unresolved uncertainties", 1)[1].split("\n## ", 1)[0].strip()
+            if len(body) < 20:
+                problems.append("SG6: '## Unresolved uncertainties' is empty")
+    # Demand: engagement cannot be counted as demand; demand score needs matching evidence
+    dp, best = check_demand(d)
+    problems += dp
+    dem = by.get(3, {}).get("score")
+    if dem is not None and dem >= 3 and best < 3:
+        problems.append(f"DEMAND: #3 verified demand scored {dem} but market-research.md has no (+) level-3/4 row with V/C evidence")
+    return problems
+
+
 def lint_one(slug):
     problems = []
     d = os.path.join(IDEAS, slug)
@@ -290,6 +569,7 @@ def lint_one(slug):
             adv = open(os.path.join(d, "adversarial-review.md"), encoding="utf-8").read()
             if "Reviewer:" not in adv or "TODO" in adv:
                 problems.append("CONDITIONAL/VALIDATED needs a completed independent adversarial review")
+    problems += safeguard_checks(d)
     return problems
 
 
@@ -311,7 +591,8 @@ def main():
         return
     cmd, args = sys.argv[1], sys.argv[2:]
     {"new": cmd_new, "searched": cmd_searched, "log": cmd_log, "fetch": cmd_fetch,
-     "score": cmd_score, "lint": cmd_lint}.get(cmd, lambda a: die(f"unknown command {cmd}"))(args)
+     "score": cmd_score, "lint": cmd_lint, "npm-grep": cmd_npm_grep, "spend": cmd_spend,
+     "rpc": cmd_rpc, "check-sources": cmd_check_sources}.get(cmd, lambda a: die(f"unknown command {cmd}"))(args)
 
 
 if __name__ == "__main__":
