@@ -23,12 +23,12 @@ Research spend: 11 web searches (1 extended), 6 GitHub searches, 1 npm fetch plu
 
 | Product | Overlap | Evidence | Overlap level |
 |---|---|---|---|
-| **Pump.fun fee sharing** | Splits creator fees by percentage across up to 10 wallets; anyone can trigger distribution; live since 2026-01-09, 318 days before Salary's first commit | [V: S1, S6] [C: S7, S8, S9] | **Full** for "distribute creator fees across wallets" |
+| **Pump.fun fee sharing** | Splits creator fees by percentage across up to 10 wallets; anyone can trigger distribution; live since 2026-01-09, 318 days before Salary's first commit | [V: S1, S6] [C: S7, S8, S9] | **Full** for "distribute creator fees across wallets"; **partial** for teams that change (≤10 wallets, one change after launch [V: S1]). Pointing the split at one Squads vault removes that limit |
 | **Bags fee share** | 1–100 claimers, editable by admin | [C: S1, S10] | **Full**, and goes beyond Pump on team size and changeability |
-| **pumpdev.io claim-and-distribute** | Claims Pump.fun creator fees and splits them among wallets on a recurring hourly schedule | [S: S11] | **Full** for "salary-style scheduled payday", if the page matches the snippet (to verify) |
+| **pumpdev.io claim-and-distribute** | Claims Pump.fun creator fees and splits them among wallets on a recurring hourly schedule | [S: S11] | **Unverified lead.** The reviewer could not find the page again. The rejection does not depend on it |
 | Streamflow payroll streams | Scheduled contributor pay from a funded stream | [V: S1] layout; [S/M: S14] payroll | Partial (no fee collection) |
 | Squads spending limits / Recipients | Team treasury with recurring payments and approval controls | [S: S15] | Partial |
-| j.tools, PumpPortal, open-source distributors | Claim / redistribute creator fees | [S: S12, S13] [V: S16] | Partial |
+| j.tools, PumpPortal, open-source distributors and toolkits (fartnode, hymet-distributor, pumpkit, dev-fee-harvester, pumpfun-tiktok-fee-share) | Claim / batch-claim / redistribute creator fees | [S: S12, S13] [V: S16] (descriptions only) | Partial |
 | Clanker / Zora / 0xSplits (Base) | Multi-recipient fee splits | [S: S18] | Full, on another chain |
 | Request Finance, Rise, Deel, Zebec | Crypto payroll for contributors | [S/M: S19] | Adjacent |
 
