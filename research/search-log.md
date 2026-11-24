@@ -138,3 +138,10 @@ Append-only. One line per search or fetch. Check with `python3 tools/ir.py searc
 | 2026-11-24 | WebSearch | memecoin traders want to know who the team is dev accountability on-chain track record request tool team verification demand Solana 2026 | salary-team-record | No request/demand for team-record tool; Yakovenko/traders sceptical of social accountability (S); DevCred hackathon again |
 | 2026-11-24 | WebSearch | bags.fm fee share automatic payouts schedule team claimers claim fees automatically | salary | No Bags scheduled payout found; accrual automatic, claiming is a manual claim call per claimer; config type fixed at creation |
 | 2026-11-24 | npm-grep | @meteora-ag/dynamic-bonding-curve-sdk@2.0.0 /creatorTradingFeePercentage/feeClaimer/leftoverReceiver/MAX_.*CLAIMER/creatorFeeShare/ | salary | 371 matches; published 2026-10-15 |
+| 2026-11-24 | budget-start | discover:ai-meme-pair-coin | ai-meme-pair-coin | caps {'research': 12, 'agents': 0}; reason: Founder ran 'ir.py budget start' after flagging that token/market sourcing was off and Accelerando is a memecoin; verify real tokens from primary data before the gist |
+| 2026-11-24 | fetch:dexscreener-search | accelerando | - | cached research/.cache/dexscreener-search-18b367db28c2d9824872.json |
+| 2026-11-24 | fetch:dexscreener-search | singularity | - | cached research/.cache/dexscreener-search-06386e15e0492be33c47.json |
+| 2026-11-24 | fetch:dexscreener-search | frontier | - | cached research/.cache/dexscreener-search-f5c14094d744280b6702.json |
+| 2026-11-24 | fetch:dexscreener-search | accelerand | - | cached research/.cache/dexscreener-search-aff61b2faedaa52e29d8.json |
+| 2026-11-24 | fetch:dexscreener-search | accelerando%20ai | - | cached research/.cache/dexscreener-search-26e9fd7500c6c9be1803.json |
+| 2026-11-24 | fetch:dexscreener-search | accel | - | cached research/.cache/dexscreener-search-98c9a7b634e828668f69.json |
