@@ -14,6 +14,12 @@ When the founder brings an idea, observation, question or "what if":
 6. Say whether you find it interesting, and why.
 7. List what we don't know, and what would be worth checking.
 
+**Think across boundaries.** Brainstorming should help the founder find things they wouldn't think of alone. Don't limit it to current crypto narratives or obvious gaps. Actively try combinations of blockchain infrastructure, traditional business models, payment systems, developer tooling, financial infrastructure, consumer apps, incentive mechanisms, automation, community-owned ecosystems and real-world services. Work in both directions:
+- **outside → in:** which proven business models from other industries could work in crypto;
+- **inside → out:** which crypto infrastructure could enable an entirely different business.
+
+Ask whether existing pieces can be combined in an unexpected way to make something useful. Novelty is not value, and demand must never be invented. But creativity isn't limited to what competitors already do.
+
 Rules for Mode A:
 - **Cheap by default:** no subagents, no formal records, no scorecards. Use 0–3 quick web searches, and only when a fact would change the discussion. Check `python3 tools/ir.py searched <terms>` and `research/` first; existing findings are free.
 - **Competitors are context, not a verdict.** If something similar exists, say so and show it, then explore whether the opportunity lies in a different audience, model, channel or experience. Don't invent differentiation either: say plainly when an angle looks covered.
