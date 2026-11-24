@@ -1,6 +1,6 @@
 # Research standards
 
-Mandatory for every agent and every session.
+Evidence rules for every mode. The formal tagging, kill-first order and safeguards (§1–5, §8–9) apply to deep validations (Mode B) and discovery scans. Brainstorming (Mode A) only needs honesty: never invent facts, and say what is unverified.
 
 ## 1. Evidence tags
 
@@ -21,7 +21,7 @@ A *material claim* is anything a verdict depends on: that a competitor exists or
 ## 2. Anti-hallucination rules
 
 1. Never invent competitors, statistics, market sizes, revenue, partnerships or user counts. If a number is not in a source, it is `U` or an `E` with arithmetic shown.
-2. Never claim something does not exist without full Stage 2 coverage (see `templates/idea/existing-solutions.md`), logged in `research/search-log.md`. An exact-name search returning nothing proves nothing.
+2. Never claim something does not exist without full Stage 2 coverage (see `templates/validation/existing-solutions.md`), logged in `research/search-log.md`. An exact-name search returning nothing proves nothing.
 3. Never present a product's marketing claims as verified performance (tag `M`).
 4. Prefer primary sources: docs, source code, SDKs on npm, IDLs, chain reads. Use journalism for dates and context.
 5. Verify important findings through two independent sources, or one primary source.
@@ -34,9 +34,9 @@ A *material claim* is anything a verdict depends on: that a competitor exists or
 
 When recording a finding, label its direction relative to the idea: **(+)** supports, **(−)** contradicts, **(0)** neutral. Negative findings are listed first in summaries and in the adversarial input.
 
-## 4. Kill-first order
+## 4. Existence-first order (Mode B)
 
-Research questions are asked in this order and the order is not optional:
+In a deep validation, research questions are asked in this order:
 
 1. Who has already solved this? (native platform features first, then products, open source, bots, other chains, adjacent industries)
 2. Why would customers not switch to us from what they use now?
@@ -54,7 +54,9 @@ Search for the **job**, not the name. For each idea, list at least 8 alternative
 
 Channels, by priority: native platform docs and changelogs → GitHub and npm → web search (3+ phrasings) → protocol directories (DefiLlama categories) → token search (CoinGecko, DexScreener) → bots and API sites → Reddit, X and forums for complaints → funding announcements → Wayback for dead projects.
 
-## 6. Scope discipline
+## 6. Scope discipline (Mode B)
+
+In brainstorming (Mode A), widening an idea is the point: explore audiences, models, channels and adjacent opportunities freely. Inside a deep validation, keep the idea under test fixed:
 
 - Capture the idea as submitted. Do not add features to make it viable.
 - If an adjacent opportunity appears, record it in one line under "Adjacent observations" in `final-verdict.md`, with evidence. Do not research it. It needs its own intake.

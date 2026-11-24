@@ -2,7 +2,7 @@
 
 Last updated 2026-11-24. Freshness: existence 90 days (re-check after 2027-02-22); traction 30 days.
 Tags: V verified · C corroborated · S snippet only · M vendor marketing · U unknown (see `system/research-standards.md`).
-"Seen in" lists the source IDs in the idea records that use these rows (`ideas/salary/sources.md`, `ideas/salary-team-record/sources.md`).
+"Seen in" lists the source IDs in the idea records that use these rows (`lessons/salary/sources.md`, `lessons/salary-team-record/sources.md`).
 
 ## A. Splitting creator / trading fees across wallets
 
@@ -15,7 +15,7 @@ Tags: V verified · C corroborated · S snippet only · M vendor marketing · U 
 | **PumpPortal: creator-fee API** | API to claim creator fees programmatically (can be scheduled by a bot) | Devs | U | U | **S** | A building block for DIY payroll |
 | **xBot** | Claims creator fees about every 10 minutes, swaps them and pays holders | Holder-reward coins | U | U | **S** | Holder payouts, not team pay |
 | **GitHub: fartnode, FARTNODESOL, hymet-distributor, best_buddy, openpumptrade/pumpkit, daronthedragon/dev-fee-harvester, 0xbl33p/pumpfun-tiktok-fee-share** | Open-source distributors that claim Pump.fun/Meteora creator fees and redistribute them (holders, creators, lenders) | Devs | Open source | 0–2 stars; pushed 2025-11 to 2026-11 | **V** for existence (GitHub search API metadata, Nov 24 2026); READMEs not read | Shows that DIY distributors are common and trivial |
-| **Splitdev (furkan3152/ponsplit)** | Pump.fun launchpad front-end: up to 9 GitHub devs plus a treasury share creator fees; split is locked permanently (admin revoked); devs claim by GitHub sign-in | Dev-team coins | Launch fee (amount U) | 0 stars; repo created 2026-09-27; live site per README | **V** for existence and design (README read 2026-11-24, `ideas/salary` S32); live status U | Multi-contributor split but deliberately NOT changeable |
+| **Splitdev (furkan3152/ponsplit)** | Pump.fun launchpad front-end: up to 9 GitHub devs plus a treasury share creator fees; split is locked permanently (admin revoked); devs claim by GitHub sign-in | Dev-team coins | Launch fee (amount U) | 0 stars; repo created 2026-09-27; live site per README | **V** for existence and design (README read 2026-11-24, `lessons/salary` S32); live status U | Multi-contributor split but deliberately NOT changeable |
 | **Clanker splits (Base)** | Multiple reward recipients / custom splits at deploy (v4); older splits endpoint being retired | Base / Farcaster deployers | Protocol take: 20% of LP fees | Over $50M cumulative fees (research-v2, M) | **S** | Same feature on EVM |
 | **Zora (Base) + 0xSplits** | Fixed reward split per coin; 0xSplits recipient contracts for multi-party payouts | Base creators | Protocol fee share | Volume down about 99.8% from peak (research-v2, M) | **S** | 0xSplits is the general EVM primitive for "split revenue to many wallets" |
 
@@ -45,7 +45,7 @@ Tags: V verified · C corroborated · S snippet only · M vendor marketing · U 
 | **Doxxxed.fun** | KYC-verified creator launchpad on Solana; listed for sale at $75k | Builders | U | Listed for sale (weak traction signal) | **M** (salary-team-record S16) | A team-trust launchpad that didn't take off |
 | **RugCheck, Axiom, Photon, Bubblemaps** | Risk reports, dev holdings/sells, holder clusters on trading terminals | Traders | Free/terminal fees | U | Existence widely known; dev-history features **U** in this pass | Check on refresh; terminals own the trader's attention |
 
-## C2. Added 2026-11-24 (salary-team-record revalidation; sources in `ideas/salary-team-record/sources.md`)
+## C2. Added 2026-11-24 (salary-team-record revalidation; sources in `lessons/salary-team-record/sources.md`)
 
 | Product | What it does | Audience | Pricing / model | Traction | Evidence | Notes |
 |---|---|---|---|---|---|---|

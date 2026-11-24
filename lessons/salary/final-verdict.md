@@ -36,3 +36,18 @@ Native-feature and demand evidence is V (SDK, chain). Several third-party tools 
 
 ## Historical cost of not doing this
 59 commits, 7 branches, a website with about 8 visual directions, a read-only checker, design docs and two research rounds. The kill-check above cost about 16 searches. See `postmortem.md`.
+
+
+---
+
+## Closed: historical record (2026-11-24)
+
+Frozen at the founder's request. No further Salary research unless explicitly asked for. What the second pass (already completed) changed:
+
+- **Unchanged:** distributing creator fees across wallets is native and free on Pump.fun (≤10 wallets) and Bags (≤100), verified in their own SDK code (S24, S25). That part of Salary already existed.
+- **Changed:** the first pass overstated equivalence for the *salary layer* (changeable + scheduled + fee-funded team pay). No verified turnkey product does it. pumpdev.io's "schedule" didn't hold up (S30), and Squads is member-signed rather than automatic (S26). Demand for that layer is unknown, not proven absent.
+- The independent second review recommended: static splitting REJECTED; salary layer NEEDS MORE RESEARCH (decisive test: do fee-earning teams route fees to a treasury and pay several people on a schedule? This needs on-chain access). It was **not pursued**.
+
+## Unresolved uncertainties
+
+Fee concentration (snippet-grade only); whether teams already pay contributors manually from treasuries; real demand for scheduled team pay; terminal features. Not being investigated.

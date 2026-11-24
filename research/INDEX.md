@@ -9,5 +9,5 @@ Reusable findings. Check here, and run `python3 tools/ir.py searched <terms>`, b
 | Launchpad landscape 2026 (Pump.fun, Bags, Zora, Believe, MetaDAO…) | [market-landscape/solana-launchpads-2026.md](market-landscape/solana-launchpads-2026.md) | 2026-11-24 | 2026-12-24 | S/M (re-verify) |
 | Platform patterns that predict idea outcomes | [industry-trends/memecoin-platform-patterns.md](industry-trends/memecoin-platform-patterns.md) | 2026-11-24 | 2027-02-22 | Derived |
 | Token necessity test (framework) | [token-economics/token-necessity-test.md](token-economics/token-necessity-test.md) | 2026-11-24 | n/a | Framework |
-| Rejected ideas and why | [failed-ideas/README.md](failed-ideas/README.md) | 2026-11-24 | n/a | n/a |
+| Failed ideas and lessons (historical) | [../lessons/README.md](../lessons/README.md) | 2026-11-24 | n/a | n/a |
 | Every search and fetch run so far | [search-log.md](search-log.md) | live | n/a | n/a |

@@ -2,7 +2,8 @@
 """ir.py: Idea Research CLI. Standard library only.
 
 Subcommands
-  new <slug> "<idea in the submitter's words>"   create ideas/<slug>/ from templates/idea
+  note <slug> "<idea in the founder's words>"    save a brainstorm note ideas/<slug>.md (Mode A, only when asked)
+  new <slug> "<idea in the submitter's words>"   start a deep validation record validations/<slug>/ (Mode B)
   searched <terms...>                            check the search log and the research index before searching
   log <tool> "<query>" <idea|-> "<result>"       record a search you ran (WebSearch, web-fetch, manual)
   fetch <source> <arg> [--max-age DAYS]          cached GET against a free data API (logged automatically)
@@ -35,9 +36,10 @@ ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 CACHE = os.path.join(ROOT, "research", ".cache")
 SEARCH_LOG = os.path.join(ROOT, "research", "search-log.md")
 RESEARCH_INDEX = os.path.join(ROOT, "research", "INDEX.md")
-IDEAS = os.path.join(ROOT, "ideas")
+IDEAS = os.path.join(ROOT, "validations")  # Mode B records; brainstorm notes live in ideas/
+NOTES = os.path.join(ROOT, "ideas")
 IDEA_INDEX = os.path.join(IDEAS, "INDEX.md")
-TEMPLATE = os.path.join(ROOT, "templates", "idea")
+TEMPLATE = os.path.join(ROOT, "templates", "validation")
 TODAY = dt.date.today().isoformat()
 
 VERDICTS = ["REJECTED", "NEEDS MORE RESEARCH", "CONDITIONAL OPPORTUNITY", "VALIDATED OPPORTUNITY"]
@@ -321,6 +323,18 @@ def cmd_check_sources(args):
     print(f"\n{ok_n}/{len(rows)} working.")
 
 
+def cmd_note(args):
+    if len(args) != 2:
+        die('usage: note <slug> "<idea in the founder\'s words>"')
+    slug, idea = args
+    p = os.path.join(NOTES, slug + ".md")
+    if os.path.exists(p):
+        die(f"{p} exists: update it instead")
+    t = open(os.path.join(ROOT, "templates", "idea-note.md"), encoding="utf-8").read()
+    open(p, "w", encoding="utf-8").write(t.replace("{{SLUG}}", slug).replace("{{DATE}}", TODAY).replace("{{IDEA}}", idea))
+    print(f"saved ideas/{slug}.md")
+
+
 def cmd_new(args):
     if len(args) != 2:
         die('usage: new <slug> "<idea in the submitter\'s own words>"')
@@ -337,7 +351,7 @@ def cmd_new(args):
         open(p, "w", encoding="utf-8").write(s)
     with open(IDEA_INDEX, "a", encoding="utf-8") as f:
         f.write(f"| [{slug}]({slug}/) | {TODAY} | Stage 1 | NOT YET DECIDED | {idea[:120]} |\n")
-    print(f"created ideas/{slug}/. Next: fill initial-hypothesis.md, then run the kill-check (Stage 2).")
+    print(f"created validations/{slug}/. Next: fill initial-hypothesis.md, then the existence check (Stage 2).")
 
 
 def parse_scorecard(slug):
@@ -551,8 +565,8 @@ def lint_one(slug):
             if m:
                 ids.add(m.group(1))
                 cells = [c.strip() for c in line.strip().strip("|").split("|")]
-                if len(cells) < 7 or not cells[2].startswith(("http", "repo:", "chain:", "file:")):
-                    problems.append(f"sources.md {m.group(1)}: needs a URL / repo: / chain: / file: locator")
+                if len(cells) < 7 or not cells[2].startswith(("http", "repo:", "chain:", "file:", "npm:", "github:")):
+                    problems.append(f"sources.md {m.group(1)}: needs a URL / repo: / npm: / github: / chain: / file: locator")
                 elif not re.match(r"\d{4}-\d{2}-\d{2}", cells[5]):
                     problems.append(f"sources.md {m.group(1)}: accessed date missing")
     for fn in REQUIRED_FILES:
@@ -580,6 +594,8 @@ def lint_one(slug):
 
 def cmd_lint(args):
     slugs = args or sorted(x for x in os.listdir(IDEAS) if os.path.isdir(os.path.join(IDEAS, x)))
+    if not slugs:
+        print("no validation records yet (lessons/ holds frozen historical records and is not linted)")
     bad = 0
     for s in slugs:
         probs = lint_one(s)
@@ -595,7 +611,7 @@ def main():
         print(__doc__)
         return
     cmd, args = sys.argv[1], sys.argv[2:]
-    {"new": cmd_new, "searched": cmd_searched, "log": cmd_log, "fetch": cmd_fetch,
+    {"new": cmd_new, "note": cmd_note, "searched": cmd_searched, "log": cmd_log, "fetch": cmd_fetch,
      "score": cmd_score, "lint": cmd_lint, "npm-grep": cmd_npm_grep, "spend": cmd_spend,
      "rpc": cmd_rpc, "check-sources": cmd_check_sources}.get(cmd, lambda a: die(f"unknown command {cmd}"))(args)
 

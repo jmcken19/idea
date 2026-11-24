@@ -1,6 +1,6 @@
 # Stage 1: Intake
 
-Parent: [`ideas/salary`](../salary/) (REJECTED). A pivot is a new idea (Rule R4). This is the research-v2 proposal [S1] as of 2026-11-24.
+Parent: [`lessons/salary`](../salary/) (REJECTED). A pivot is a new idea (Rule R4). This is the research-v2 proposal [S1] as of 2026-11-24.
 
 ## The idea in the submitter's words (verbatim)
 

@@ -1,6 +1,8 @@
 # Lessons learned (permanent rules)
 
-Each lesson comes from a real failure and has become a rule that the framework enforces. The full Salary record is in `ideas/salary/`. The postmortem is `ideas/salary/postmortem.md`.
+These rules guard against *building* something that already exists. They apply in deep validations (Mode B), and whenever Claude would suggest developing anything. They do **not** mean killing ideas during brainstorming: there, an existing competitor is a starting point for finding a different angle.
+
+Each lesson comes from a real failure and has become a rule that the framework enforces. The full Salary record is in `lessons/salary/` (historical, closed). The postmortem is `lessons/salary/postmortem.md`. **Salary isn't re-investigated unless the founder asks.**
 
 ## From Salary (Nov 23–24, 2026)
 
@@ -43,6 +45,10 @@ Each lesson comes from a real failure and has become a rule that the framework e
 ### L10. Speed hides the decision point
 **What happened:** All 59 commits happened between 15:46 UTC Nov 23 and 03:18 UTC Nov 24. Development happened so fast that there was never a moment where someone asked "should we?" before "how do we?".
 **Rule R10:** Stages are sequential gates with a written result in the idea's README stage log. A stage cannot start until the previous gate result is written.
+
+### L11. Verify equivalence at primary grade, in both directions
+**What happened:** the first-pass rejection said a scheduled fee-distribution tool (pumpdev.io) existed, on snippet evidence. Primary sources later showed it wasn't verified, so the "it already exists" claim was overstated for the salary layer. The fee-splitting part really was native.
+**Rule R11:** "Already exists" and "nobody has built this" are both material claims. Neither is accepted on snippets. Overstating competition throws away real openings, just as understating it repeats Salary.
 
 ## Adding a lesson
 

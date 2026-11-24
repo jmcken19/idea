@@ -13,7 +13,7 @@ Read in this order: `final-verdict.md`, `existing-solutions.md`, `adversarial-re
 
 | Stage | Gate result | Date | Notes |
 |---|---|---|---|
-| 1 Intake | Pass | 2026-11-24 | Pivot of ideas/salary (Rule R4) |
+| 1 Intake | Pass | 2026-11-24 | Pivot of lessons/salary (Rule R4) |
 | 2 Existence check | **FAIL** | 2026-11-24 | Deployer-history tools exist (S); extension copyable; no demand evidence |
 | 3 Competitor analysis | Skipped by gate | 2026-11-24 |  |
 | 4 Demand validation | Skipped by gate | 2026-11-24 | Original kill tests never run |

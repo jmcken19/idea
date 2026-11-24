@@ -78,7 +78,7 @@ class TestCachingAndDedup(Sandbox):
 
 def make_idea(base, slug, **overrides):
     d = os.path.join(base, slug)
-    shutil.copytree(os.path.join(ROOT, "templates", "idea"), d)
+    shutil.copytree(os.path.join(ROOT, "templates", "validation"), d)
     files = {
         "sources.md": "| ID | Source | Locator | Type | Published | Accessed | Supports |\n|---|---|---|---|---|---|---|\n"
                       "| S1 | SDK | https://registry.npmjs.org/x | repo | 2026-01-01 | 2026-11-24 | feature exists |\n"

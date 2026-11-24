@@ -1,16 +1,16 @@
 # Agent architecture
 
-A small, staged system: one lead plus specialists who are only called when they add value. No swarms.
+The main session does almost everything. In brainstorming (Mode A) and most discovery scans **no agents run at all**. The four specialists exist for deep validations (Mode B) the founder asks for, and run only when their work materially improves the answer. No swarms.
 
 ## Roles
 
 | Role | Where it runs | Model | When it is activated | Writes |
 |---|---|---|---|---|
-| **Research Lead** | The main session | Session model | Always. Runs Stages 1, 2 and 7 inline, and owns the verdict | `initial-hypothesis.md`, `existing-solutions.md`, `final-verdict.md`, `scorecard.md` |
+| **Research Lead** | The main session | Session model | Always. A brainstorming partner in Mode A. In Mode B it runs Stages 1, 2 and 7 inline, and explains the opportunity, not just the score | `initial-hypothesis.md`, `existing-solutions.md`, `final-verdict.md`, `scorecard.md` |
 | **Market Researcher** | `.claude/agents/market-researcher.md` | sonnet | Stage 2 needs more than about 15 searches, or Stage 3 needs a full matrix | `existing-solutions.md` (additions), `competitor-analysis.md`, `research/competitor-database/` |
 | **Technical Researcher** | `.claude/agents/technical-researcher.md` | sonnet | Only after Gate 4, and only if feasibility could change the verdict (custody, closed programs, admin keys) | `technical-feasibility.md`, `research/crypto-infrastructure/` |
 | **Commercial Analyst** | `.claude/agents/commercial-analyst.md` | sonnet | Stages 4–5, after Gate 3 passes | `market-research.md`, `commercial-analysis.md` |
-| **Adversarial Reviewer** | `.claude/agents/adversarial-reviewer.md` | opus | Stage 6 always, before any CONDITIONAL/VALIDATED. Also the short *inverse check* after a Gate-2 rejection | `adversarial-review.md` |
+| **Adversarial Reviewer** | `.claude/agents/adversarial-reviewer.md` | opus | Stage 6 always, before any CONDITIONAL/VALIDATED. Optional *inverse check* only when a rejection rests on thin evidence | `adversarial-review.md` |
 
 The main session acts as Research Lead and does not need a separate agent file. Its rules are in `CLAUDE.md`.
 

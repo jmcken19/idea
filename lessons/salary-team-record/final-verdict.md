@@ -32,3 +32,14 @@ Competitor evidence is mostly search-snippet grade (S), because page fetches are
 | 3–5 | Skipped: Gate 2 failed |
 | 6 Adversarial | Inverse check complete (rejection stands) |
 | 7 Decision | Complete |
+
+
+---
+
+## Closed: historical record (2026-11-24)
+
+Frozen at the founder's request. The second pass (already completed) **strengthened** this rejection: GMGN's own published CLI/API code covers creator history, rug ratio, team hold and lock summary, plus a "dev score" skill (S25, S40); Mobula, MadeOnSol and Rug Munch are confirmed in vendor code (S19, S21, S23); Bags' SDK exposes team rosters and fee shares (S39). Only lock cancel authority and payday history remain unshipped, with no demand evidence.
+
+## Unresolved uncertainties
+
+What Pump.fun, Axiom and GMGN show on screen; sales volumes behind listed prices; Mobula's launchpad coverage. Not being investigated.

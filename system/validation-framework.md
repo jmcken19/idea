@@ -1,9 +1,11 @@
-# Validation framework
+# Validation framework (Mode B: deep validation)
+
+Used **only when the founder asks to validate an idea**. Brainstorming (Mode A) and discovery scans don't use these stages; see `CLAUDE.md`. The aim is an honest answer to "is there a real opportunity here?": pursue further, needs more research, or abandon.
 
 Seven sequential stages with written gates. A stage starts only after the previous gate result is written in the idea's `README.md` stage log (Rule R10). Budgets are in `system/usage-budget.md`.
 
 ```
-1 Intake ─▶ 2 Existence ─┬─(equivalent, no real difference)──▶ REJECTED (+ inverse check)
+1 Intake ─▶ 2 Existence ─┬─(equivalent, no real difference)──▶ abandon this framing; hand untested angles back to brainstorming
                          ▼
                    3 Competitors ─▶ 4 Demand ─┬─(only talk, no behaviour)──▶ NEEDS MORE RESEARCH
                                               ▼
@@ -23,7 +25,7 @@ Seven sequential stages with written gates. A stage starts only after the previo
 - Every dependency the idea relies on is also assessed as a competitor.
 - Log every query (`tools/ir.py log` / `fetch`).
 - **Gate 2:**
-  - Equivalent found + differentiation test fails → **REJECTED**. Stop. Skip Stages 3–5. Run the *inverse check*: one short pass by the adversarial reviewer arguing that the rejection is wrong. A false reject is also an error.
+  - Equivalent found → before abandoning, check which audiences, business models, channels or experiences the equivalent does *not* cover, and whether any has evidence. If the framing as submitted has no real difference and no evidenced alternative, the outcome for that framing is **REJECTED**: skip Stages 3–5, and hand the untested angles back to the founder as brainstorm threads. An inverse check by the reviewer is optional, worth it only when the rejection rests on thin evidence. A false reject is also an error (Rule R11).
   - Equivalent found + differentiation has evidence → Stage 3, and the differentiation becomes the hypothesis under test.
   - Nothing found after full coverage → Stage 3. "Nothing found" is itself suspicious, so record it as a risk ("why has nobody done this?").
 
@@ -51,7 +53,7 @@ Seven sequential stages with written gates. A stage starts only after the previo
 ## Stage 7: Decision (Research Lead)
 - Run `python3 tools/ir.py score <slug>`. The verdict may not exceed the ceiling.
 - Where the lead and the reviewer disagree, the lead writes down which evidence settles it. If none does, the lower verdict stands.
-- Write `final-verdict.md`. Update `ideas/INDEX.md`. If REJECTED, add a one-line entry to `research/failed-ideas/README.md`. If the rejection taught something new, add a lesson to `system/lessons-learned.md`.
+- Write `final-verdict.md`. Update `validations/INDEX.md`. If REJECTED, add a one-line entry to `lessons/README.md`. If the rejection taught something new, add a lesson to `system/lessons-learned.md`.
 
 ## Safeguards
 SG1–SG6 and the demand-versus-engagement rules in `system/research-standards.md` §8–9 apply at every gate. `tools/ir.py lint` enforces them.

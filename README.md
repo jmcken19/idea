@@ -1,49 +1,29 @@
-# Crypto Idea Intelligence & Validation
+# Crypto Idea Lab
 
-An independent research system that takes business ideas (crypto, Solana, DeFi, token launches) from **0 → researched → challenged → validated or rejected**. It builds no products.
+A place to bring random ideas, observations, questions and possible opportunities (crypto, token launches, blockchain infrastructure, emerging markets) and turn the interesting ones into researched opportunities. A brainstorming partner with market-intelligence research behind it. It does not build products.
 
-**The success metric is how many bad opportunities are rejected before resources are spent on them.**
+## How to use it
 
-## How an idea is evaluated
-
-```
-/intake  →  /kill-check  →  /validate  →  /adversarial-review  →  verdict
-Stage 1     Stage 2         Stages 3–5     Stage 6 (separate       Stage 7
-            "who already                   agent, claims +
-            solves this?"                  sources only)
-```
-
-Verdicts: **REJECTED** · **NEEDS MORE RESEARCH** · **CONDITIONAL OPPORTUNITY** · **VALIDATED OPPORTUNITY**. Most ideas should die at Stage 2, for about 16 searches.
-
-To submit an idea, tell Claude in this repo: *"New idea: …"*. It runs `/intake` and `/kill-check`, and reports back bluntly.
+| You say | What happens | Cost |
+|---|---|---|
+| "What if we created something around creator fees?" / "Why doesn't X exist?" | **Mode A: brainstorm.** Explore the concept, alternative audiences, models and channels, adjacent opportunities, assumptions and unknowns. Uses existing research; at most a few quick searches | Low |
+| "Save this idea" | One short note in `ideas/<slug>.md` | Minimal |
+| "What opportunities exist in the Solana ecosystem?" / `/discover <area>` | **Discovery scan**: emerging infrastructure, underserved users, new combinations. Separates "unbuilt" from "wanted" | Medium |
+| "Validate this" / "Deep dive" / `/validate <idea>` | **Mode B: deep validation.** Competitors, GitHub, token launches, demand, revenue models, feasibility, distribution, risks, with sourced evidence and an independent challenge. Outcome: pursue further / needs more research / abandon | Higher |
 
 ## Layout
 
 | Path | What |
 |---|---|
-| `CLAUDE.md` | Operating rules loaded by every session (Research Lead role, kill-first, no build output) |
-| `system/` | `research-standards.md` (evidence tags, anti-hallucination), `validation-framework.md` (stages and gates), `scoring-framework.md`, `agent-architecture.md`, `usage-budget.md`, `tooling.md` (what is installed and what needs keys), `lessons-learned.md` (the Salary rules) |
-| `ideas/` | One folder per idea; `INDEX.md` registry |
-| `templates/idea/` | The record every idea starts from |
-| `research/` | Reusable findings: `INDEX.md`, `competitor-database/`, `market-landscape/`, `crypto-infrastructure/`, `token-economics/`, `industry-trends/`, `failed-ideas/`, plus `search-log.md` (deduplication) |
-| `tools/ir.py` | CLI: `new`, `searched`, `log`, `fetch` (cached data APIs), `score`, `lint` |
-| `.claude/agents/` | market-researcher, technical-researcher, commercial-analyst (sonnet); adversarial-reviewer (opus) |
-| `.claude/skills/` | intake, kill-check, validate, adversarial-review, solana-analytics |
-
-## Quick commands
-
-```bash
-python3 tools/ir.py searched fee split          # what do we already know?
-python3 tools/ir.py fetch github-repos "creator fee distributor"
-python3 tools/ir.py fetch defillama-fees pump.fun   # needs the host allowlisted (system/tooling.md)
-python3 tools/ir.py score salary
-python3 tools/ir.py lint
-```
-
-## Records so far
-
-- [`ideas/salary`](ideas/salary/): the historical test. **REJECTED** at Gate 2. See [`postmortem.md`](ideas/salary/postmortem.md).
-- [`ideas/salary-team-record`](ideas/salary-team-record/): Salary's pivot. **REJECTED** at Gate 2.
+| `CLAUDE.md` | How Claude behaves here (modes, evidence, usage) |
+| `ideas/` | Brainstorm notes (Mode A) |
+| `discovery/` | Opportunity scans |
+| `validations/` | Deep validation records (Mode B), from `templates/validation/` |
+| `research/` | Shared intelligence: `market-landscape/`, `competitor-database/`, `industry-trends/`, `crypto-infrastructure/`, `token-economics/`, `INDEX.md`, `search-log.md` (sources and deduplication) |
+| `lessons/` | Failed ideas and lessons, including the Salary postmortem (historical, not active) |
+| `system/` | Research standards, validation framework, scoring, agents, usage budget, tooling, lessons-learned rules |
+| `tools/ir.py` | CLI: `searched`, `log`, `fetch` (cached data APIs), `npm-grep`, `rpc`, `note`, `new`, `score`, `lint`, `spend`, `check-sources` |
+| `.claude/` | Skills (`brainstorm`, `discover`, `validate`, `intake`, `kill-check`, `adversarial-review`, `solana-analytics`) and four specialist agents used in Mode B |
 
 ## Setup still needed
-See `system/tooling.md` § 3: allow the free crypto data API hosts in the cloud environment (one-time, free); optional free CoinGecko and Helius keys; Dune only if a later idea needs paid on-chain studies.
+Most crypto data APIs and web pages are blocked by the cloud environment's network policy. The host list to allow is in `system/tooling.md` §3; the current status is in §5.
