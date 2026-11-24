@@ -229,3 +229,80 @@ class TestScoringGates(unittest.TestCase):
 
 if __name__ == "__main__":
     unittest.main()
+
+
+import subprocess  # noqa: E402
+
+HOOK = os.path.join(ROOT, "tools", "budget_hook.py")
+
+
+class TestBudgetHook(unittest.TestCase):
+    """Hard limits: research calls, agent launches, prompt size, stop messages."""
+
+    def setUp(self):
+        self.tmp = tempfile.mkdtemp()
+        self.env = dict(os.environ, IR_BUDGET_DIR=self.tmp)
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp)
+
+    def call(self, tool, inp, sid="s1"):
+        r = subprocess.run([sys.executable, HOOK], input=json.dumps({"session_id": sid, "tool_name": tool, "tool_input": inp}),
+                           capture_output=True, text=True, env=self.env)
+        return r.returncode, r.stderr
+
+    def test_brainstorm_allows_3_research_calls_then_blocks_with_stop_message(self):
+        codes = [self.call("WebSearch", {"query": f"q{i}"})[0] for i in range(3)]
+        code, err = self.call("Bash", {"command": "python3 tools/ir.py fetch npm x"})
+        self.assertEqual(codes, [0, 0, 0])
+        self.assertEqual(code, 2)
+        self.assertIn("Summarize the evidence", err)
+
+    def test_brainstorm_blocks_all_agents(self):
+        code, err = self.call("Agent", {"subagent_type": "market-researcher", "prompt": "x"})
+        self.assertEqual(code, 2)
+        self.assertIn("main session only", err)
+
+    def test_unrelated_tools_and_bash_are_free(self):
+        for _ in range(10):
+            self.assertEqual(self.call("Bash", {"command": "ls; python3 tools/ir.py searched fee"})[0], 0)
+            self.assertEqual(self.call("Read", {"file_path": "x"})[0], 0)
+
+    def test_workflow_caps_and_extension(self):
+        ir.BUDGET_DIR, ir.ACTIVE_BUDGET = self.tmp, os.path.join(self.tmp, "active.json")
+        saved_log = ir.SEARCH_LOG
+        ir.SEARCH_LOG = os.path.join(self.tmp, "log.md")
+        try:
+            run(ir.cmd_budget, "start", "demo", "discover", "--research", "2", "--agents", "1", "--reason", "founder asked")
+            self.assertEqual(self.call("Agent", {"subagent_type": "market-researcher", "prompt": "packet: validations/demo/evidence-packet.md"})[0], 0)
+            self.assertEqual(self.call("Agent", {"subagent_type": "extractor", "prompt": "x"})[0], 2)
+            self.assertEqual([self.call("WebSearch", {"query": "a"})[0] for _ in range(3)], [0, 0, 2])
+            _, _, code = run(ir.cmd_budget, "extend", "research", "1")
+            self.assertEqual(code, 1, "an extension without a reason must be refused")
+            run(ir.cmd_budget, "extend", "research", "1", "--reason", "one specific competitor page")
+            self.assertEqual(self.call("WebSearch", {"query": "b"})[0], 0)
+            out, _, _ = run(ir.cmd_budget, "end")
+            self.assertIn("ended discover:demo", out)
+        finally:
+            ir.SEARCH_LOG = saved_log
+
+    def test_oversized_agent_prompt_is_blocked(self):
+        open(os.path.join(self.tmp, "active.json"), "w").write(json.dumps(
+            {"workflow": "validate:x", "caps": {"research": 9, "agents": 9}, "used": {}, "expires": "9999"}))
+        code, err = self.call("Agent", {"subagent_type": "commercial-analyst", "prompt": "x" * 20000})
+        self.assertEqual(code, 2)
+        self.assertIn("evidence packet", err)
+
+
+class TestPacketCheck(Sandbox):
+    def test_packet_size_sections_and_no_conclusions(self):
+        d = os.path.join(ir.IDEAS, "p")
+        os.makedirs(d)
+        tpl = open(os.path.join(ROOT, "templates", "validation", "evidence-packet.md")).read()
+        open(os.path.join(d, "evidence-packet.md"), "w").write(tpl)
+        self.assertEqual(run(ir.cmd_packet_check, "p")[2], 0)
+        open(os.path.join(d, "evidence-packet.md"), "w").write(tpl + "\n## Lead's view\nlooks great\n" + "x" * 13000)
+        out, _, code = run(ir.cmd_packet_check, "p")
+        self.assertEqual(code, 1)
+        self.assertIn("exceeds", out)
+        self.assertIn("conclusions", out)

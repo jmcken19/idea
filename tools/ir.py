@@ -13,6 +13,10 @@ Subcommands
   spend <slug>                                   research spend for an idea from the search log, against the budget
   rpc <method> ['<json params>']                 Solana JSON-RPC call (SOLANA_RPC_URL or the public endpoint), cached
   check-sources [--pages]                        call every data source with a known query and validate the response body
+  budget start <slug> <validate|discover> [--research N] [--agents N] --reason "<founder's request>"
+  budget status | budget extend <research|agents> <n> --reason "<why>" | budget end
+                                                 hard caps enforced by tools/budget_hook.py (see system/usage-budget.md)
+  packet-check <slug>                            check validations/<slug>/evidence-packet.md (size cap, sections)
 
 Set IR_IDEA=<slug> in the environment so fetch / npm-grep / rpc calls are attributed
 to that idea in the search log and counted by `spend` (export IR_IDEA=salary).
@@ -346,6 +350,92 @@ def cmd_note(args):
     print(f"saved ideas/{slug}.md")
 
 
+BUDGET_DIR = os.environ.get("IR_BUDGET_DIR", os.path.join(ROOT, "research", ".budget"))
+ACTIVE_BUDGET = os.path.join(BUDGET_DIR, "active.json")
+PRESETS = {"validate": {"research": 45, "agents": 5}, "discover": {"research": 12, "agents": 1}}
+PACKET_MAX_CHARS = 12000
+PACKET_SECTIONS = ["## Idea under test", "## Claims and evidence", "## Sources", "## Already searched",
+                   "## Open questions", "## Assignments"]
+
+
+def _flag(args, name, cast=str, default=None):
+    if name in args:
+        i = args.index(name)
+        v = cast(args[i + 1])
+        del args[i:i + 2]
+        return v
+    return default
+
+
+def cmd_budget(args):
+    if not args:
+        die("usage: budget start|status|extend|end ...")
+    sub, args = args[0], args[1:]
+    os.makedirs(BUDGET_DIR, exist_ok=True)
+    active = json.load(open(ACTIVE_BUDGET)) if os.path.exists(ACTIVE_BUDGET) else None
+    if sub == "start":
+        reason = _flag(args, "--reason")
+        research = _flag(args, "--research", int)
+        agents = _flag(args, "--agents", int)
+        if len(args) != 2 or args[1] not in PRESETS or not reason:
+            die('usage: budget start <slug> <validate|discover> [--research N] [--agents N] --reason "<founder request>"')
+        if active:
+            die(f"a workflow is already active ({active['workflow']}). End it first: budget end")
+        caps = dict(PRESETS[args[1]])
+        caps["research"] = research if research is not None else caps["research"]
+        caps["agents"] = agents if agents is not None else caps["agents"]
+        expires = (dt.datetime.now() + dt.timedelta(hours=24)).isoformat()
+        ledger = {"workflow": f"{args[1]}:{args[0]}", "caps": caps, "used": {}, "reason": reason,
+                  "started": dt.datetime.now().isoformat(timespec="seconds"), "expires": expires, "extensions": []}
+        json.dump(ledger, open(ACTIVE_BUDGET, "w"), indent=1)
+        append_log("budget-start", ledger["workflow"], args[0], f"caps {caps}; reason: {reason}")
+        print(f"started {ledger['workflow']} with caps {caps} (expires in 24h)")
+    elif sub == "status":
+        if not active:
+            print("no active workflow: brainstorm defaults apply (research 3 per session, agents 0)")
+            return
+        for k, cap in active["caps"].items():
+            print(f"{k:9s} {active['used'].get(k, 0)}/{cap}")
+        print(f"workflow {active['workflow']}; extensions: {len(active['extensions'])}")
+    elif sub == "extend":
+        reason = _flag(args, "--reason")
+        if not active or len(args) != 2 or args[0] not in ("research", "agents") or not reason:
+            die('usage: budget extend <research|agents> <n> --reason "<specific justification>" (needs an active workflow)')
+        active["caps"][args[0]] += int(args[1])
+        active["extensions"].append([dt.datetime.now().isoformat(timespec="seconds"), args[0], int(args[1]), reason])
+        json.dump(active, open(ACTIVE_BUDGET, "w"), indent=1)
+        append_log("budget-extend", f"{args[0]} +{args[1]}", active["workflow"].split(":", 1)[1], reason)
+        print(f"{args[0]} cap now {active['caps'][args[0]]}. Report this extension and its reason to the founder.")
+    elif sub == "end":
+        if not active:
+            die("no active workflow")
+        hist = os.path.join(BUDGET_DIR, "history")
+        os.makedirs(hist, exist_ok=True)
+        os.replace(ACTIVE_BUDGET, os.path.join(hist, active["workflow"].replace(":", "-") + "-" + TODAY + ".json"))
+        append_log("budget-end", active["workflow"], active["workflow"].split(":", 1)[1], f"used {active['used']} of {active['caps']}")
+        print(f"ended {active['workflow']}: used {active['used']} of {active['caps']}")
+    else:
+        die("usage: budget start|status|extend|end")
+
+
+def cmd_packet_check(args):
+    if len(args) != 1:
+        die("usage: packet-check <slug>")
+    p = os.path.join(IDEAS, args[0], "evidence-packet.md")
+    if not os.path.exists(p):
+        die(f"missing {p} (copy templates/validation/evidence-packet.md)")
+    text = open(p, encoding="utf-8").read()
+    problems = [f"missing section '{h}'" for h in PACKET_SECTIONS if h not in text]
+    if len(text) > PACKET_MAX_CHARS:
+        problems.append(f"{len(text)} chars exceeds the {PACKET_MAX_CHARS}-char cap: compress claims, cite S-IDs instead of quoting")
+    if re.search(r"^##\s*(Lead'?s (view|conclusion)|Verdict|Recommendation)", text, re.M | re.I):
+        problems.append("packet contains the lead's conclusions; keep them out so specialists and the reviewer judge independently")
+    for prob in problems:
+        print(" - " + prob)
+    print(f"packet {len(text)}/{PACKET_MAX_CHARS} chars: {'OK' if not problems else 'FIX BEFORE HANDOFF'}")
+    sys.exit(1 if problems else 0)
+
+
 def cmd_new(args):
     if len(args) != 2:
         die('usage: new <slug> "<idea in the submitter\'s own words>"')
@@ -624,7 +714,8 @@ def main():
     cmd, args = sys.argv[1], sys.argv[2:]
     {"new": cmd_new, "note": cmd_note, "searched": cmd_searched, "log": cmd_log, "fetch": cmd_fetch,
      "score": cmd_score, "lint": cmd_lint, "npm-grep": cmd_npm_grep, "spend": cmd_spend,
-     "rpc": cmd_rpc, "check-sources": cmd_check_sources}.get(cmd, lambda a: die(f"unknown command {cmd}"))(args)
+     "rpc": cmd_rpc, "check-sources": cmd_check_sources,
+     "budget": cmd_budget, "packet-check": cmd_packet_check}.get(cmd, lambda a: die(f"unknown command {cmd}"))(args)
 
 
 if __name__ == "__main__":

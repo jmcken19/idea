@@ -106,3 +106,17 @@ All 12 tested pages are **blocked**: pump.fun/docs, docs.bags.fm, pumpdev.io, st
 | Scoring gates | A high total can't hide an existing equivalent; a fatal flag wins; unsourced scores count as unverified |
 | Safeguards SG1–SG6 | Each has a failing and a passing fixture |
 | Demand vs engagement | Likes, waitlists, stars and token price capped at level 1; engagement-only evidence can't support a demand score of 3; snippet-grade "paying" evidence doesn't count; negative usage data doesn't count as support |
+
+## 6. Operational recommendations (2026-11-24)
+
+**Network: manual steps still needed** (nothing has been changed on your behalf; the last check, audit 2, found every host below still blocked):
+1. In the cloud environment's settings, go to *Network access → Allowed domains* (keep "Allow package managers" ticked). Ideally use a new personal environment for this repo, because Claude's two attempts to create or edit one were rejected by the environments service. Add the 11 data hosts from §3: `api.llama.fi coins.llama.fi api.coingecko.com api.geckoterminal.com api.dexscreener.com lite-api.jup.ag api.rugcheck.xyz api.mainnet-beta.solana.com www.reddit.com hn.algolia.com web.archive.org`.
+2. Optionally, add docs hosts for the protocols you research often (e.g. `pump.fun`, `docs.bags.fm`, `docs.squads.so`, `streamflow.finance`, `gmgn.ai`, `docs.mobula.io`).
+3. After changing settings, run `python3 tools/ir.py check-sources` **once** (it is a single invocation, counted as one research call). Don't probe blocked hosts repeatedly. Access counts as restored only when that check validates real content.
+4. Optional free keys via the environment's secret form (never in chat or in the repo): CoinGecko Demo, Helius Free.
+
+Working now without changes: GitHub search, raw.githubusercontent.com, `git clone` of public repos, npm (incl. package code via `npm-grep`), PyPI, WebSearch.
+
+**Session and plugin overhead:**
+- Start future sessions with **only `jmcken19/idea` attached.** Each extra repository adds its skills to every turn's context (the Salary repo adds six: helius, pumpfun, squads, solana-dev, graphify, research).
+- If the user-level `posty` and `thumbnail-maker` (abracadabrax) plugins keep failing to connect, **disable them in your Claude settings.** They are unrelated to this repo and are attempted at every session start. Claude has not changed user-level settings.

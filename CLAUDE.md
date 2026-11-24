@@ -49,6 +49,8 @@ The founder has limited usage. Use the cheapest workflow that answers the questi
 - **Load progressively.** In Mode A, read nothing beyond this file unless the conversation needs it. In Mode B, read only the `system/` doc and template for the current stage. Read `research/` files only when `searched` or `research/INDEX.md` points to them.
 - **Don't re-read unchanged files** within a session. Use what's already in context.
 - **Reuse cached data.** `ir.py fetch` serves cached results for 7 days and prints 3,000 characters by default (the full body stays in `research/.cache/`, so grep it instead of re-fetching).
+- **Hard caps** (`tools/budget_hook.py`, enabled in `.claude/settings.json`): brainstorming is capped at 3 research calls per session and 0 agents. A deep validation or discovery scan gets its own cap only through `python3 tools/ir.py budget start …`, which is run **only when the founder explicitly asks**. When the hook blocks a call, stop: summarize what you have, list the open questions, and ask before extending.
+- **Models:** main session Opus (`claude-opus-5-5`); research and review agents Sonnet; the `extractor` agent Haiku. All pinned in frontmatter.
 - Budgets: `system/usage-budget.md`.
 
 ## Where things live

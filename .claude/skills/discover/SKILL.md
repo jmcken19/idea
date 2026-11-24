@@ -2,7 +2,7 @@
 name: discover
 description: Opportunity discovery scan. ONLY when the founder explicitly asks for a scan (/discover <area> or "run a discovery scan"). Searches an area for opportunities the founder hasn't named, separating "unbuilt" from "wanted". A casual "what opportunities exist?" question is brainstorming, not a scan.
 ---
-Budget: up to 10 standard WebSearch, plus cheap primary checks (`ir.py npm-grep`, `fetch github-repos`). One `market-researcher` agent only if the founder asks for a broad scan. Reuse `research/` first (`python3 tools/ir.py searched <terms>`).
+Start the hard budget first: `python3 tools/ir.py budget start <area> discover --reason "<founder's request>"` (12 research calls, 1 agent). Reuse `research/` before searching (`python3 tools/ir.py searched <terms>`). Prefer cheap primary checks (`ir.py npm-grep`, `fetch github-repos`). One `market-researcher` agent only if the founder asks for a broad scan. When the budget is exhausted, write what you have, list the open threads, and stop. Finish with `python3 tools/ir.py budget end`.
 
 1. Scope the area in one line with the founder (chain, segment, time window).
 2. Find what changed recently: new infrastructure, launch mechanisms, protocol economics and policy changes, with dates and sources.

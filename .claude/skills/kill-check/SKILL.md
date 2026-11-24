@@ -2,7 +2,7 @@
 name: kill-check
 description: Mode B, Stage 2 existence check. Find who already does the idea's job (native features, products, open source, bots, other chains, recent and discontinued projects) and whether a real, wanted difference remains. Only inside a deep validation the founder asked for.
 ---
-Run inline as Research Lead. Budget: 12 web searches (≤3 extended), 5 page fetches, 10 API fetches (`system/usage-budget.md`).
+Run inline as Research Lead. Budget: 12 research calls (searches + fetches; ≤3 extended searches), counted against the workflow cap by the hook (`system/usage-budget.md`). If the allowance runs out, record coverage so far, list the unchecked channels, and stop.
 
 1. Read `validations/<slug>/initial-hypothesis.md`, `research/INDEX.md` and `research/competitor-database/`. Run `python3 tools/ir.py searched <terms>` for each main phrasing and reuse fresh findings.
 2. Native features first: the platform or protocol the idea sits on (docs, changelog, SDK release notes via `python3 tools/ir.py fetch npm <pkg>`). Every dependency is also a competitor (Rule R1).
