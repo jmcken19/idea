@@ -180,3 +180,19 @@ Append-only. One line per search or fetch. Check with `python3 tools/ir.py searc
 | 2026-11-24 | fetch:dexscreener-token | 0xB695559b26BB2c9703ef1935c37AeaE9526bab07 | - | cached research/.cache/dexscreener-token-003b5f9fc183cafea47c.json |
 | 2026-11-24 | fetch:github-repos | agent social network forum agents upvote created:>2026-08-25 | - | cached research/.cache/github-repos-82909e056ff33cea1cff.json |
 | 2026-11-24 | budget-end | validate:ai-agent-forum-tokens | ai-agent-forum-tokens | used {'research': 11} of {'research': 45, 'agents': 5} |
+| 2026-11-24 | budget-start | validate:singularity-agent-memes | singularity-agent-memes | caps {'research': 45, 'agents': 5}; reason: Founder: 'Yes run all the scoping and research needed to formulate all research needed to begin building' (Singularity = decentralized AI memes; Bittensor-style: agent forums as subnets, token per forum paired with Singularity, agent characters) |
+| 2026-11-24 | fetch:rugcheck | 7R4MP6VX7n3RMNhL9zsk5Zu5ibZvwq8npUYnRq7epump | - | cached research/.cache/rugcheck-6e8d923e85778a62813b.json |
+| 2026-11-24 | fetch:dexscreener-token | 7R4MP6VX7n3RMNhL9zsk5Zu5ibZvwq8npUYnRq7epump | - | cached research/.cache/dexscreener-token-c498bb619933adaa847a.json |
+| 2026-11-24 | rpc | getAccountInfo ["7R4MP6VX7n3RMNhL9zsk5Zu5ibZvwq8npUYnRq7epump",{"encoding":"jsonParsed"}] | singularity-agent-memes | cached research/.cache/rpc-e5b19058649a5aa8e1be.json |
+| 2026-11-24 | WebSearch | Bittensor dTAO subnet alpha tokens paired with TAO emissions Yuma consensus | singularity-agent-memes | Official docs+CoinGecko: per-subnet TAO/alpha AMM, emissions follow market demand, Yuma Consensus scores miners; Taoflow restructure |
+| 2026-11-24 | WebSearch | Singularity Solana token team dev November 2026 | singularity-agent-memes | No project/team info found; many same-name tokens |
+| 2026-11-24 | WebSearch | pump.fun creator fee rate percent PumpSwap creator fees 2026 | singularity-agent-memes | Creator share about 0.30% per trade (sources disagree); fee sharing up to 10 wallets (Jan 2026) |
+| 2026-11-24 | WebSearch | Moltbook traffic daily active agents 2026 | singularity-agent-memes | Growth then plateau; about 46K active of 1.5M claimed; 2.3M posts and 14M comments in 2 months |
+| 2026-11-24 | WebSearch | Metaplex agent registry Solana agent identity ERC-8004 | singularity-agent-memes | Metaplex Agent Registry (MPL Core + ERC-8004 style) launched Jun 2026; Solana Agent Registry also exists |
+| 2026-11-24 | WebSearch | SEC memecoins not securities staff statement AI agent tokens | singularity-agent-memes | SEC staff Feb 2025: memecoins not securities (no legal force, fraud still actionable); nothing on AI-agent tokens |
+| 2026-11-24 | WebSearch | AI-generated memes humans watch agents engagement spectator | singularity-agent-memes | Human spectatorship of agent platforms evidenced (Moltbook); no AI meme feed traction numbers |
+| 2026-11-24 | WebSearch | cost to run autonomous AI agent LLM inference cost per agent | singularity-agent-memes | Operator pays inference; Moltbook active agents 1-4B tokens/day est; per-agent range wide |
+| 2026-11-24 | WebSearch | Raydium LaunchLab Token-2022 quote token support | singularity-agent-memes | Raydium changelog 2026-08-24: LaunchLab accepts Token-2022 quote mints; no screening of quote mint; TransferHook risk |
+| 2026-11-24 | WebSearch | Moltbook October November 2026 news status | singularity-agent-memes | Meta acquired Moltbook 2026-03-10 (Neowin, secondary); Nov 2026: 2.93M registered, 4.73M posts, registrations stalled |
+| 2026-11-24 | WebSearch | preventing sybil fake agents voting agent-only social network | singularity-agent-memes | Only generic sybil literature; nothing agent-specific; liveness needs sybil share under 1/3 |
+| 2026-11-24 | budget-end | validate:singularity-agent-memes | singularity-agent-memes | used {'research': 12} of {'research': 45, 'agents': 5} |
