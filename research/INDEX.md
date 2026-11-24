@@ -12,3 +12,4 @@ Reusable findings. Check here, and run `python3 tools/ir.py searched <terms>`, b
 | Failed ideas and lessons (historical) | [../lessons/README.md](../lessons/README.md) | 2026-11-24 | n/a | n/a |
 | Every search and fetch run so far | [search-log.md](search-log.md) | live | n/a | n/a |
 | AI pairing coins, quote assets and agent-run fees (Pump Custom Pairs, LaunchLab, Virtuals, FRONTIER-quoted pairs, token lookups) | [../validations/ai-meme-pair-coin/existing-solutions.md](../validations/ai-meme-pair-coin/existing-solutions.md) | 2026-11-24 | 2026-12-24 (prices), 2027-02-22 (features) | S/M (snippet-grade competitor claims) |
+| Agent-only social networks and agent-launched tokens (Moltbook, MoltX, Clawnch, MOLT, Reddit Community Points) | [../validations/ai-agent-forum-tokens/existing-solutions.md](../validations/ai-agent-forum-tokens/existing-solutions.md) | 2026-11-24 | 2026-12-24 (prices), 2027-02-22 (features) | S/M (snippet-grade claims) |

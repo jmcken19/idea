@@ -166,3 +166,17 @@ Append-only. One line per search or fetch. Check with `python3 tools/ir.py searc
 | 2026-11-24 | WebSearch | Virtuals Protocol every agent token paired with VIRTUAL liquidity pair base currency agent launch | ai-meme-pair-coin | Every Virtuals agent token pairs against VIRTUAL (third-party sources) = incumbent canonical AI pairing coin |
 | 2026-11-24 | WebSearch | Pump.fun Mayhem Mode results AI agent trading new launches performance tokenized agents buyback traction | ai-meme-pair-coin | Mayhem Mode failed to lift launches/revenue in first week (Nov 2025); no later data |
 | 2026-11-24 | budget-end | validate:ai-meme-pair-coin | ai-meme-pair-coin | used {'research': 10} of {'research': 45, 'agents': 5} |
+| 2026-11-24 | budget-start | validate:ai-agent-forum-tokens | ai-agent-forum-tokens | caps {'research': 45, 'agents': 5}; reason: Founder: 'Yes run the research given this now' after pivot: agent-only Reddit-style forum; consensus in general spawns a new forum; each forum gets a token paired with Singularity; agent profiles and upvotes |
+| 2026-11-24 | fetch:dexscreener-search | moltbook | - | cached research/.cache/dexscreener-search-4bd8bf8f42de87809ca7.json |
+| 2026-11-24 | fetch:jup-search | moltbook | - | cached research/.cache/jup-search-38fe2f2ca837b0afe7b7.json |
+| 2026-11-24 | WebSearch | Moltbook AI agents social network Reddit-style submolts token MOLT | ai-agent-forum-tokens | Moltbook launched Jan 26-28 2026; Reddit-style, submolts, humans watch only; MOLT on Base, 7000% then -60% |
+| 2026-11-24 | WebSearch | Moltbook users decline fake agents retention security 2026 | ai-agent-forum-tokens | Wiz: 1.5M API tokens exposed, most 'agents' not autonomous, one agent registered 500K fakes; no retention data found |
+| 2026-11-24 | WebSearch | AI agents only social network forum each community has token launched by agents consensus | ai-agent-forum-tokens | Clawnch: agent-only launchpad on Base (Clanker), integrates Moltx/Moltbook/4claw; no consensus-spawned forum tokens found |
+| 2026-11-24 | WebSearch | Moltbook acquired OR shutdown OR traffic 2026 | ai-agent-forum-tokens | No acquisition/shutdown found; current status unknown; 1.5M claimed vs about 17K real users estimate |
+| 2026-11-24 | WebSearch | Clawnch bots launch tokens Moltbook fees creator revenue | ai-agent-forum-tokens | Clawnch 8,600+ tokens, agents >$1.3M fees (unaudited); fee split conflicting |
+| 2026-11-24 | WebSearch | Moltx Chirper agent-only social networks alternatives | ai-agent-forum-tokens | MoltX (Feb 2026), Chirper (2023) exist; no community-token products found |
+| 2026-11-24 | WebSearch | Solana AI agent social network forum token per community | ai-agent-forum-tokens | No Solana agent forum with per-community tokens found |
+| 2026-11-24 | WebSearch | Reddit Community Points Moons Bricks shut down | ai-agent-forum-tokens | Reddit ended per-community tokens Oct-Nov 2023; MOON -85%, BRICK -70%; 'no path to scale', regulatory |
+| 2026-11-24 | fetch:dexscreener-token | 0xB695559b26BB2c9703ef1935c37AeaE9526bab07 | - | cached research/.cache/dexscreener-token-003b5f9fc183cafea47c.json |
+| 2026-11-24 | fetch:github-repos | agent social network forum agents upvote created:>2026-08-25 | - | cached research/.cache/github-repos-82909e056ff33cea1cff.json |
+| 2026-11-24 | budget-end | validate:ai-agent-forum-tokens | ai-agent-forum-tokens | used {'research': 11} of {'research': 45, 'agents': 5} |
