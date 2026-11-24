@@ -120,3 +120,12 @@ Working now without changes: GitHub search, raw.githubusercontent.com, `git clon
 **Session and plugin overhead:**
 - Start future sessions with **only `jmcken19/idea` attached.** Each extra repository adds its skills to every turn's context (the Salary repo adds six: helius, pumpfun, squads, solana-dev, graphify, research).
 - If the user-level `posty` and `thumbnail-maker` (abracadabrax) plugins keep failing to connect, **disable them in your Claude settings.** They are unrelated to this repo and are attempted at every session start. Claude has not changed user-level settings.
+
+## 7. Audit 3 (2026-11-24): network restored via the `idea` environment
+
+The founder created a personal environment **`idea`** (linked to `jmcken19/idea`) with the 11 data hosts. After this session was switched to it, `check-sources` validated real content from **14 of 16 sources**:
+- **Working:** DefiLlama (fees, protocol), CoinGecko, DexScreener, GeckoTerminal, Jupiter, RugCheck, Solana RPC, HN, GitHub search and raw files, npm, npm search, PyPI.
+- **Reddit:** HTTP 403 from Reddit itself. The proxy now allows the host, but Reddit refuses unauthenticated scripted requests. Use WebSearch for Reddit content.
+- **Wayback:** connection reset. It may be transient; it was checked once and not retried.
+
+Start future sessions for this repo on the **`idea`** environment, not Default. Web pages for competitors and docs remain blocked unless their hosts are added (see §6.2).
