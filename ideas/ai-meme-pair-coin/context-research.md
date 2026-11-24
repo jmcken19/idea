@@ -71,3 +71,19 @@ CA from founder: `HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump` (Solana).
 - **RugCheck** summary: one risk flag, "Creator history of rugged tokens" (danger, normalised score 53). That is an automated heuristic on the creator wallet, not proof about this token. LP locked 0%.
 - Why my name searches missed it: DexScreener has no entry for it at all, so "accelerando" returned nothing there.
 - Unknown: holder count and concentration, creator wallet and its history, who is behind it, what the coin's story is, whether it is the founder's own token or one they want to build around.
+
+## Re-run with the token-lookup rule (2026-11-24; about 10 of 12 discovery calls used)
+
+Jupiter (`jup-search`) was the richest source and confirms all three on Solana. Numbers are Jupiter's as of Nov 24 and noisy.
+
+| Token | CA | Launch | Mcap | Liq | Holders | Notes |
+|---|---|---|---|---|---|---|
+| **Accelerando** | `HiNkp9...ypump` | pump.fun, graduated 2026-01-30 | about $6.8K | about $4.8K | 1,814 | Dormant (no 24h volume). Organic score 0/low. Top holders 14.6%. Mint and freeze authority disabled. Site accelerando.fun, X @_accelerando_ (both not fetchable here). |
+| **Singularity** | `7R4MP6...epump` | pump.fun, graduated 2026-11-20 (4 days old) | about $114K | about $17K | 3,628 | 24h buy+sell volume about $344K, 1,694 traders, price -16.7% 24h, holders -10.4% 24h. Organic score 65 (medium). Top holders 15.2%. Site singularitydotcom.com, X @DateSingularity. Many look-alikes ("Singularity dot Com", "Singularity Inu", singularity.com copies). Which one the founder means is still unconfirmed. |
+| **AI Frontier** | `58QyXQ...dfUhZ` | first pool 2026-10-13 | about $171K | about $108K | 7,728 | Jupiter **verified**. 24h volume about $2.2M buy+sell, 4,350 traders. Not a pump.fun token: mint authority still set, dev has minted 277 times, supply only 247K at about $0.69. Top holders 34%. Site diversifi.trade, X @usediversifi (site not fetchable). The earlier "$40K, 15 holders" listing was a different address. |
+
+- **What Accelerando is (S-grade):** a search hit on a Pump.fun bounty page calls it "a fictional AI religion" that posted a paid bounty (a "First Doctrine" on recursive intelligence), with rulings and payouts recorded on-chain. Ticker shown as $HiNk (matches the CA prefix). Single snippet, unverified.
+- **Is AI Frontier the "Frontier index"?** Unconfirmed. Its mint authority, repeated dev mints and diversifi.trade site are consistent with a managed or basket-style token, but no source says so. A web search found no link between FRONTIER and DiversiFi.
+- **Pair mechanic:** other tokens are quoted in FRONTIER (BUBBLE, BUTTHOLE, Frongus), see the DexScreener section above.
+- **Sites blocked here:** accelerando.fun and diversifi.trade return a proxy 403, so what each project says about itself is unread.
+- **Adjacent context (search snippets, S-grade):** Pump.fun "Mayhem Mode" (an AI agent trades new launches in their first 24h and burns unsold tokens) and the automated buyback tool for agent tokens; plus the Clanker/Agency/Metaplex items above.

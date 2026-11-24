@@ -148,3 +148,8 @@ Append-only. One line per search or fetch. Check with `python3 tools/ir.py searc
 | 2026-11-24 | fetch:dexscreener-token | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/dexscreener-token-5d39c73bf93f2c0f3ff5.json |
 | 2026-11-24 | fetch:rugcheck | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/rugcheck-60d26104b92662c304e1.json |
 | 2026-11-24 | fetch:geckoterminal-pools | HiNkp9CdKqTgPtB6WnnrrUAu9YwQqnrvT6Ceuxoypump | - | cached research/.cache/geckoterminal-pools-8621041faf25fd07897d.json |
+| 2026-11-24 | fetch:jup-search | singularity | - | cached research/.cache/jup-search-303d290c6582a4f70e39.json |
+| 2026-11-24 | fetch:jup-search | frontier | - | cached research/.cache/jup-search-c36fba0d39709a636d0e.json |
+| 2026-11-24 | fetch:jup-search | accelerando | - | cached research/.cache/jup-search-012d031dd0f46b34db78.json |
+| 2026-11-24 | fetch:url | https://diversifi.trade | - | FAILED: diversifi.trade unreachable (<urlopen error Tunnel connection failed: 403 Forbidden (agent proxy: no rule or network setting allows this host)>) |
+| 2026-11-24 | fetch:url | https://accelerando.fun | - | FAILED: accelerando.fun unreachable (<urlopen error Tunnel connection failed: 403 Forbidden (agent proxy: no rule or network setting allows this host)>) |
