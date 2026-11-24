@@ -1,0 +1,31 @@
+# Secrets — never commit API keys. Use environment variables (see .mcp.json / README).
+.env
+.env.*
+!.env.example
+*.key
+secrets.json
+
+# Dune / run artifacts
+params.json
+*.local.sql
+results/
+*.results.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.mypy_cache/
+
+# Node (MCP servers are run via npx; no node_modules committed)
+node_modules/
+npm-debug.log*
+
+# OS / editor
+.DS_Store
+Thumbs.db
+.idea/
+.vscode/
+*.swp

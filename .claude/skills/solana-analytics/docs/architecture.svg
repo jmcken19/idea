@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="860" viewBox="0 0 1200 860" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg2" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#11152a"/>
+    </linearGradient>
+    <linearGradient id="rail" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9945FF"/>
+      <stop offset="1" stop-color="#14F195"/>
+    </linearGradient>
+  </defs>
+  <rect width="1200" height="860" fill="url(#bg2)"/>
+  <rect x="0" y="0" width="1200" height="6" fill="url(#rail)"/>
+
+  <!-- title -->
+  <text x="60" y="74" fill="#f4f6fb" font-size="34" font-weight="700" letter-spacing="-0.5">solana-analytics-skill</text>
+  <text x="60" y="104" fill="#8b93ad" font-size="18">Progressive routing · loads one focused reference per intent · Solana-first, EVM-aware</text>
+
+  <!-- router node -->
+  <rect x="470" y="132" width="260" height="68" rx="12" fill="#1a1030" stroke="#9945FF" stroke-width="2"/>
+  <text x="600" y="167" fill="#f4f6fb" font-size="22" font-weight="700" text-anchor="middle">SKILL.md</text>
+  <text x="600" y="189" fill="#b89cf0" font-size="14" text-anchor="middle">intent router</text>
+
+  <!-- bus -->
+  <line x1="600" y1="200" x2="600" y2="232" stroke="#3a3360" stroke-width="2"/>
+  <line x1="230" y1="232" x2="970" y2="232" stroke="#3a3360" stroke-width="2"/>
+  <line x1="230" y1="232" x2="230" y2="262" stroke="#3a3360" stroke-width="2"/>
+  <line x1="600" y1="232" x2="600" y2="262" stroke="#3a3360" stroke-width="2"/>
+  <line x1="970" y1="232" x2="970" y2="262" stroke="#3a3360" stroke-width="2"/>
+
+  <!-- module cards -->
+  <g>
+    <!-- row 1 -->
+    <g>
+      <rect x="60" y="262" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="60" y="262" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="84" y="300" fill="#E5B567" font-size="22" font-weight="700">01</text>
+      <text x="128" y="298" fill="#f4f6fb" font-size="19" font-weight="600">Data Sources</text>
+      <text x="128" y="324" fill="#8b93ad" font-size="14">Dune Spellbook · Flipside · Helius DAS</text>
+    </g>
+    <g>
+      <rect x="430" y="262" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="430" y="262" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="454" y="300" fill="#E5B567" font-size="22" font-weight="700">02</text>
+      <text x="498" y="298" fill="#f4f6fb" font-size="19" font-weight="600">Decoding</text>
+      <text x="498" y="324" fill="#8b93ad" font-size="14">logs + Anchor IDL → analytics tables</text>
+    </g>
+    <g>
+      <rect x="800" y="262" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="800" y="262" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="824" y="300" fill="#E5B567" font-size="22" font-weight="700">03</text>
+      <text x="868" y="298" fill="#f4f6fb" font-size="19" font-weight="600">Protocol KPIs</text>
+      <text x="868" y="324" fill="#8b93ad" font-size="14">TVL · volume · retention · share</text>
+    </g>
+    <!-- row 2 -->
+    <g>
+      <rect x="60" y="372" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="60" y="372" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="84" y="410" fill="#E5B567" font-size="22" font-weight="700">04</text>
+      <text x="128" y="408" fill="#f4f6fb" font-size="19" font-weight="600">DeFi Analytics</text>
+      <text x="128" y="434" fill="#8b93ad" font-size="14">DEX · lending · LST · perps</text>
+    </g>
+    <g>
+      <rect x="430" y="372" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="430" y="372" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="454" y="410" fill="#E5B567" font-size="22" font-weight="700">05</text>
+      <text x="498" y="408" fill="#f4f6fb" font-size="19" font-weight="600">Holder &amp; Wallet</text>
+      <text x="498" y="434" fill="#8b93ad" font-size="14">distribution · whale/bot segmentation</text>
+    </g>
+    <g>
+      <rect x="800" y="372" width="340" height="92" rx="10" fill="#161226"/>
+      <rect x="800" y="372" width="4" height="92" rx="2" fill="#E5B567"/>
+      <text x="824" y="410" fill="#E5B567" font-size="22" font-weight="700">06</text>
+      <text x="868" y="408" fill="#f4f6fb" font-size="19" font-weight="600">Forensics</text>
+      <text x="868" y="434" fill="#E5B567" font-size="14">wash · rug · sybil · MEV · tracing</text>
+    </g>
+    <!-- row 3 -->
+    <g>
+      <rect x="60" y="482" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="60" y="482" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="84" y="520" fill="#E5B567" font-size="22" font-weight="700">07</text>
+      <text x="128" y="518" fill="#f4f6fb" font-size="19" font-weight="600">Growth Reporting</text>
+      <text x="128" y="544" fill="#8b93ad" font-size="14">grant / fundraising metrics</text>
+    </g>
+    <g>
+      <rect x="430" y="482" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="430" y="482" width="4" height="92" rx="2" fill="#9945FF"/>
+      <text x="454" y="520" fill="#E5B567" font-size="22" font-weight="700">08</text>
+      <text x="498" y="518" fill="#f4f6fb" font-size="19" font-weight="600">Dashboard Build</text>
+      <text x="498" y="544" fill="#8b93ad" font-size="14">10-step playbook + archetypes</text>
+    </g>
+    <g>
+      <rect x="800" y="482" width="340" height="92" rx="10" fill="#141a31"/>
+      <rect x="800" y="482" width="4" height="92" rx="2" fill="#14F195"/>
+      <text x="824" y="520" fill="#E5B567" font-size="22" font-weight="700">09</text>
+      <text x="868" y="518" fill="#f4f6fb" font-size="19" font-weight="600">Execution</text>
+      <text x="868" y="544" fill="#8b93ad" font-size="14">operator mode · validate · deliver</text>
+    </g>
+  </g>
+
+  <!-- executable rail -->
+  <rect x="60" y="612" width="1080" height="86" rx="12" fill="#0e1428" stroke="#2b3358" stroke-width="1.5"/>
+  <text x="84" y="642" fill="#14F195" font-size="14" font-weight="700" letter-spacing="1">EXECUTABLE LAYER</text>
+  <g font-size="18" font-weight="600">
+    <rect x="84" y="652" width="250" height="34" rx="8" fill="#1a1030" stroke="#9945FF" stroke-width="1.5"/>
+    <text x="209" y="675" fill="#f4f6fb" text-anchor="middle" font-size="16">Dune + Helius MCP</text>
+    <text x="356" y="675" fill="#6b7290" text-anchor="middle" font-size="20">→</text>
+    <rect x="380" y="652" width="190" height="34" rx="8" fill="#141a31" stroke="#2b3358" stroke-width="1.5"/>
+    <text x="475" y="675" fill="#f4f6fb" text-anchor="middle" font-size="16">dune_run.py</text>
+    <text x="592" y="675" fill="#6b7290" text-anchor="middle" font-size="20">→</text>
+    <rect x="616" y="652" width="180" height="34" rx="8" fill="#141a31" stroke="#2b3358" stroke-width="1.5"/>
+    <text x="706" y="675" fill="#f4f6fb" text-anchor="middle" font-size="16">paste-ready</text>
+  </g>
+  <text x="830" y="675" fill="#8b93ad" font-size="15">MCP-first · graceful fallback · never fabricates results</text>
+
+  <!-- badges -->
+  <g font-size="15" font-weight="600">
+    <rect x="60" y="742" width="190" height="40" rx="20" fill="#141a31" stroke="#9945FF" stroke-width="1.5"/>
+    <text x="155" y="767" fill="#f4f6fb" text-anchor="middle">22 SQL templates</text>
+    <rect x="266" y="742" width="170" height="40" rx="20" fill="#141a31" stroke="#14F195" stroke-width="1.5"/>
+    <text x="351" y="767" fill="#f4f6fb" text-anchor="middle">12 offline tests</text>
+    <rect x="452" y="742" width="140" height="40" rx="20" fill="#141a31" stroke="#2b3358" stroke-width="1.5"/>
+    <text x="522" y="767" fill="#f4f6fb" text-anchor="middle">3 agents</text>
+    <rect x="608" y="742" width="160" height="40" rx="20" fill="#141a31" stroke="#2b3358" stroke-width="1.5"/>
+    <text x="688" y="767" fill="#f4f6fb" text-anchor="middle">5 commands</text>
+    <rect x="784" y="742" width="120" height="40" rx="20" fill="#141a31" stroke="#E5B567" stroke-width="1.5"/>
+    <text x="844" y="767" fill="#f4f6fb" text-anchor="middle">MIT</text>
+  </g>
+
+  <text x="1136" y="828" fill="#6b7290" font-size="15" text-anchor="end">@Ghostiemoh · for the Solana AI Kit</text>
+</svg>

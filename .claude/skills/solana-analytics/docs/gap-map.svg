@@ -1,0 +1,71 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="675" viewBox="0 0 1200 675" font-family="'Segoe UI', Helvetica, Arial, sans-serif">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#0a0e1a"/>
+      <stop offset="1" stop-color="#11152a"/>
+    </linearGradient>
+    <linearGradient id="violet" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#7a35e0"/>
+      <stop offset="1" stop-color="#9945FF"/>
+    </linearGradient>
+    <linearGradient id="tip" x1="0" y1="0" x2="1" y2="0">
+      <stop offset="0" stop-color="#9945FF"/>
+      <stop offset="1" stop-color="#14F195"/>
+    </linearGradient>
+  </defs>
+
+  <rect width="1200" height="675" fill="url(#bg)"/>
+  <rect x="0" y="0" width="6" height="675" fill="url(#tip)"/>
+
+  <!-- header -->
+  <text x="64" y="92" fill="#f4f6fb" font-size="50" font-weight="700" letter-spacing="-1">The Analyst-Shaped Hole</text>
+  <text x="64" y="132" fill="#8b93ad" font-size="22">Solana's agent stack can build, execute, index, and secure. It can't <tspan fill="#E5B567" font-weight="600">analyze</tspan>.</text>
+
+  <!-- bars -->
+  <!-- rows start at y=190, row height 44, gap 14 -->
+  <g font-size="20">
+    <!-- Build -->
+    <text x="64" y="218" fill="#c7cde0" font-weight="600">Build</text>
+    <rect x="300" y="196" width="780" height="36" rx="8" fill="#1b2138"/>
+    <rect x="300" y="196" width="780" height="36" rx="8" fill="url(#violet)"/>
+    <text x="1096" y="220" fill="#14F195" font-size="18">✓</text>
+
+    <!-- Execute -->
+    <text x="64" y="276" fill="#c7cde0" font-weight="600">Execute</text>
+    <rect x="300" y="254" width="780" height="36" rx="8" fill="#1b2138"/>
+    <rect x="300" y="254" width="780" height="36" rx="8" fill="url(#violet)"/>
+    <text x="1096" y="278" fill="#14F195" font-size="18">✓</text>
+
+    <!-- Index -->
+    <text x="64" y="334" fill="#c7cde0" font-weight="600">Index</text>
+    <rect x="300" y="312" width="780" height="36" rx="8" fill="#1b2138"/>
+    <rect x="300" y="312" width="780" height="36" rx="8" fill="url(#violet)"/>
+    <text x="1096" y="336" fill="#14F195" font-size="18">✓</text>
+
+    <!-- Secure -->
+    <text x="64" y="392" fill="#c7cde0" font-weight="600">Secure</text>
+    <rect x="300" y="370" width="780" height="36" rx="8" fill="#1b2138"/>
+    <rect x="300" y="370" width="780" height="36" rx="8" fill="url(#violet)"/>
+    <text x="1096" y="394" fill="#14F195" font-size="18">✓</text>
+
+    <!-- Go-to-Market -->
+    <text x="64" y="450" fill="#c7cde0" font-weight="600">Go-to-Market</text>
+    <rect x="300" y="428" width="780" height="36" rx="8" fill="#1b2138"/>
+    <rect x="300" y="428" width="780" height="36" rx="8" fill="url(#violet)"/>
+    <text x="1096" y="452" fill="#14F195" font-size="18">✓</text>
+
+    <!-- Analyze (the hole) -->
+    <text x="64" y="508" fill="#E5B567" font-weight="700">Analyze</text>
+    <rect x="300" y="486" width="780" height="36" rx="8" fill="none" stroke="#E5B567" stroke-width="1.5" stroke-dasharray="6 6"/>
+    <text x="318" y="510" fill="#E5B567" font-size="17" font-style="italic">empty — no skill teaches an agent to read the chain</text>
+    <text x="1096" y="510" fill="#E5B567" font-size="17" text-anchor="end" font-weight="700">0%</text>
+  </g>
+
+  <!-- callout -->
+  <text x="300" y="556" fill="#9aa3bd" font-size="16">↳ <tspan fill="#f4f6fb" font-weight="600">solana-analytics-skill</tspan> fills it: schema · decoding · KPIs · holders · forensics · grant reports</text>
+
+  <!-- footer / tagline -->
+  <line x1="64" y1="596" x2="1136" y2="596" stroke="#222843" stroke-width="1"/>
+  <text x="64" y="636" fill="#E5B567" font-size="22" font-style="italic" font-weight="600">“The blockchain never lies. Stop guessing. Start querying.”</text>
+  <text x="1136" y="636" fill="#6b7290" font-size="16" text-anchor="end">@Ghostiemoh · MIT</text>
+</svg>

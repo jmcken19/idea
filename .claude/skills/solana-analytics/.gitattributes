@@ -1,0 +1,5 @@
+# Keep shell scripts LF so they run on Linux/macOS regardless of where they were committed.
+*.sh text eol=lf
+# Normalize text; let git handle the rest.
+* text=auto
+*.png binary

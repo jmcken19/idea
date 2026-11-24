@@ -1,0 +1,41 @@
+name: ci
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Run unit tests (dune_run.py, offline — no API key needed)
+        run: python -m unittest discover -s scripts -p "test_*.py" -v
+
+      - name: Structural integrity check (entry point + routed files exist)
+        run: |
+          set -e
+          test -f SKILL.md
+          test -f README.md
+          test -f LICENSE
+          for f in 01-data-sources 02-decoding 03-protocol-kpis 04-defi-analytics \
+                   05-holder-wallet 06-forensics 07-growth-reporting 08-dashboard-build \
+                   09-execution-playbook resources; do
+            test -f "references/$f.md" || { echo "missing references/$f.md"; exit 1; }
+          done
+          echo "structure OK"
+
+      - name: No placeholder slop in shipped SQL
+        run: |
+          set -e
+          if grep -RInE '\bTODO\b|\bFIXME\b|\.\.\.|placeholder' assets/*.sql; then
+            echo "Found placeholder/slop tokens in SQL — fix before merge."; exit 1
+          fi
+          echo "SQL clean"
