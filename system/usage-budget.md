@@ -41,3 +41,12 @@ A Gate-2 rejection should cost about 16 searches and one short reviewer run.
 | Historical facts (launch dates, past events) | Never stale |
 
 Cached API data (`research/.cache/`) defaults to a 7-day reuse window (`--max-age` to change).
+
+## Enforcement (audit 2 finding, 2026-11-24)
+
+The budgets were advisory. In audit 2, one researcher agent overran its tool-call budget by about 33% (about 40 calls against 30), and `spend` didn't notice. Tool fetches were logged without an idea slug, so only WebSearch was counted. Fixed:
+- every `ir.py` call made with `IR_IDEA=<slug>` is attributed to that idea;
+- each agent definition requires `IR_IDEA` and a `spend` check before finishing;
+- the Research Lead runs `python3 tools/ir.py spend <slug>` after each agent run and records the spend in the idea README.
+
+Budgets remain soft limits, because a model can't be hard-stopped mid-run by this tool. An overrun is recorded in the idea README with a reason.

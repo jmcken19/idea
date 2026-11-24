@@ -13,6 +13,9 @@ Subcommands
   rpc <method> ['<json params>']                 Solana JSON-RPC call (SOLANA_RPC_URL or the public endpoint), cached
   check-sources [--pages]                        call every data source with a known query and validate the response body
 
+Set IR_IDEA=<slug> in the environment so fetch / npm-grep / rpc calls are attributed
+to that idea in the search log and counted by `spend` (export IR_IDEA=salary).
+
 Cached responses live in research/.cache/ (git-ignored). Every fetch and log
 entry is appended to research/search-log.md, so later sessions can see what
 was already asked and reuse it instead of paying for it again.
@@ -78,6 +81,8 @@ def die(msg, code=1):
 
 
 def append_log(tool, query, idea, result):
+    if idea in ("-", "", None):
+        idea = os.environ.get("IR_IDEA", "-")  # attribute fetches to the idea being researched
     new = not os.path.exists(SEARCH_LOG)
     with open(SEARCH_LOG, "a", encoding="utf-8") as f:
         if new:

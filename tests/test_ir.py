@@ -101,6 +101,19 @@ def make_idea(base, slug, **overrides):
     return d
 
 
+class TestSpendAttribution(Sandbox):
+    def test_fetches_are_attributed_via_IR_IDEA(self):
+        page = os.path.join(self.tmp, "x.json")
+        json.dump({"k": 1}, open(page, "w"))
+        os.environ["IR_IDEA"] = "attrib"
+        try:
+            run(ir.cmd_fetch, "url", "file://" + page)
+        finally:
+            del os.environ["IR_IDEA"]
+        out, _, _ = run(ir.cmd_spend, "attrib")
+        self.assertIn("fetch        1 / 60", out)
+
+
 class TestLintAndSafeguards(Sandbox):
     def test_clean_record_passes(self):
         d = make_idea(ir.IDEAS, "good")
